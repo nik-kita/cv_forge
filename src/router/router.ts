@@ -1,15 +1,32 @@
+import PageHome from '@/pages/PageHome.vue'
 import {createRouter, createWebHistory} from 'vue-router'
-import HomeView from '../pages/PageHome.vue'
 
-const router = createRouter({
+export const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
       path: '/',
-      name: 'home',
-      component: HomeView,
+      redirect: '/home',
+    },
+    {
+      path: '/home',
+      component: PageHome,
+      meta: {
+        x_nav_ev_name: 'nav.to.PageHome',
+        maybe_nik_slug: true,
+      },
+    },
+    {
+      path: '/home/:nik',
+      component: PageHome,
+      meta: {
+        x_nav_ev_name: 'nav.to.PageHome',
+        maybe_nik_slug: true,
+      },
+    },
+    {
+      path: '/:pathMatch(.*)*',
+      redirect: '/home',
     },
   ],
 })
-
-export default router

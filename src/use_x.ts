@@ -1,13 +1,18 @@
-import {nav_machine} from '@/x/nav/nav_machine'
 import {createActor} from 'xstate'
-import {auth_machine} from './x/auth/auth_machine'
+import {root_machine} from './x/root/root_machine'
 
-const nav = createActor(nav_machine)
-const auth = createActor(auth_machine)
+const root = createActor(root_machine)
+const rsnapshot = root.getSnapshot()
+const auth = rsnapshot.children.auth!
+const nav = rsnapshot.children.nav!
 
+root.start()
 export const use_x = () => {
   return {
     nav,
     auth,
   }
 }
+
+console.assert(!!auth, 'auth is not defined')
+console.assert(!!nav, 'nav is not defined')

@@ -1,8 +1,8 @@
 import './assets/main.css'
 // ---
-import 'primevue/resources/themes/aura-light-green/theme.css'
 import Button from 'primevue/button'
 import PrimeVue from 'primevue/config'
+import 'primevue/resources/themes/aura-light-green/theme.css'
 
 import {createApp} from 'vue'
 import App from './App.vue'

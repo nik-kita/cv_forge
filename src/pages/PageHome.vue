@@ -1,9 +1,46 @@
 <script setup lang="ts">
 import {use_x} from '@/use_x'
+import {use_xstore} from '@/x/xstore'
+import {ref} from 'vue'
 
-const {nav} = use_x()
+const {nav, auth} = use_x()
+const {is_user} = use_xstore()
+
+const nav_value = ref(nav.getSnapshot().value)
+const auth_value = ref(auth.getSnapshot().value)
+
+nav.subscribe(ns => {
+  nav_value.value = ns.value
+})
+auth.subscribe(as => {
+  auth_value.value = as.value
+})
 </script>
 
 <template>
-  <h1>Home</h1>
+  <div class="root">
+    <h1>Home</h1>
+    <hr />
+    <pre>is_user: {{ is_user }}</pre>
+    <pre>nav: {{ nav_value }}</pre>
+    <pre>auth: {{ auth_value }}</pre>
+    <Button @click="auth.send({type: 'auth.logout'})"
+      >auth.send({type: 'auth.logout'})</Button
+    >
+    <Button
+      @click="auth.send({type: 'auth.sign_in.success'})"
+      >auth.send({type: 'auth.sign_in.success'})</Button
+    >
+  </div>
 </template>
+
+<style scoped>
+.root {
+  display: flex;
+  flex-flow: column;
+  gap: 1rem;
+  padding-left: 5rem;
+  padding-top: 5rem;
+  background-color: whitesmoke;
+}
+</style>

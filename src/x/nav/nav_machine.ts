@@ -1,7 +1,7 @@
 import {router} from '@/router/router'
 import {raise, setup} from 'xstate'
-import {navigate_ev} from './raise.navigate_ev'
 import {nav_router_integration} from './nav_router_integration.fn'
+import {navigate_ev} from './raise.navigate_ev'
 
 const nav_toggle_guard = {
   allow: false,

@@ -1,18 +1,15 @@
-import type {
-  DoneActorEvent as origin_DoneActorEvent,
-  ErrorActorEvent as origin_ErrorActorEvent,
-} from 'xstate'
+import type {DoneActorEvent, ErrorActorEvent} from 'xstate'
 
 namespace x {
-  export type DoneActorEvent<Id extends string, T> =
+  export type DoneActorEv<Id extends string, T> =
     | OmitReplace<
-        origin_DoneActorEvent<T>,
+        DoneActorEvent<T>,
         {
           type: `xstate.done.actor.${Id}`
         }
       >
     | OmitReplace<
-        origin_ErrorActorEvent<T>,
+        ErrorActorEvent<T>,
         {
           type: `xstate.error.actor.${Id}`
         }

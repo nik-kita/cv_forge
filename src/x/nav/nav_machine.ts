@@ -1,6 +1,11 @@
 import {router} from '@/router/router'
 import {raise, setup} from 'xstate'
+import {navigate_ev} from './raise.navigate_ev'
+import {nav_router_integration} from './nav_router_integration.fn'
 
+const nav_toggle_guard = {
+  allow: false,
+}
 export const nav_machine = setup({
   types: {
     events: {} as x.nav.Ev,
@@ -10,12 +15,12 @@ export const nav_machine = setup({
   id: 'nav',
   on: {
     'nav.request_to_navigate': {
-      actions: raise(({event}) => {
-        return event
-      }),
+      actions: raise(navigate_ev),
     },
   },
-  context() {
+  context({self}) {
+    nav_router_integration(router, nav_toggle_guard, self)
+
     return {
       router,
     }

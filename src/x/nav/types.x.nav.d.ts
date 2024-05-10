@@ -8,9 +8,12 @@ declare global {
     export type Ev =
       | {
           type: 'nav.request_to_navigate'
+          to: RouteLocationNormalized
+          from: RouteLocationNormalized
         }
       | {
           type: 'nav.to.PageHome'
+          path: string
         }
   }
 }

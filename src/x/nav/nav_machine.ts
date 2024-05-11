@@ -1,7 +1,10 @@
 import {router} from '@/router/router'
 import {raise, setup} from 'xstate'
-import {integrate_router, navigate} from './actions'
-import {navigate_ev} from './raise.navigate_ev'
+import {
+  integrate_router,
+  navigate,
+  raise_nav_ev,
+} from './actions.nav'
 
 export const nav_machine = setup({
   types: {
@@ -19,7 +22,7 @@ export const nav_machine = setup({
   },
   on: {
     'nav.request_to_navigate': {
-      actions: raise(navigate_ev),
+      actions: raise(raise_nav_ev),
     },
     'nav.to.PageHome': {
       target: '.PageHome',

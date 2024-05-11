@@ -1,4 +1,5 @@
 import PageHome from '@/pages/PageHome.vue'
+import PageProfiles from '@/pages/PageProfiles.vue'
 import {createRouter, createWebHistory} from 'vue-router'
 
 export const router = createRouter({
@@ -21,6 +22,14 @@ export const router = createRouter({
       component: PageHome,
       meta: {
         x_nav_ev_name: 'nav.to.PageHome',
+        maybe_nik_slug: true,
+      },
+    },
+    {
+      path: '/profiles',
+      component: PageProfiles,
+      meta: {
+        x_nav_ev_name: 'nav.to.Profiles',
         maybe_nik_slug: true,
       },
     },

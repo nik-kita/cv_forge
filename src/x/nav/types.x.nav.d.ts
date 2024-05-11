@@ -1,9 +1,17 @@
-import type {Router} from 'vue-router'
+import type {
+  Router,
+  RouteLocationNormalized,
+} from 'vue-router'
+import type {nav_machine} from '@/x/nav/nav_machine'
 
 declare global {
   namespace x.nav {
+    export type logic = ActorRefFrom<typeof nav_machine>
     export type Ctx = {
       router: Router
+      nav_toggle_guard: {
+        allow: boolean
+      }
     }
     export type Ev =
       | {
@@ -13,6 +21,10 @@ declare global {
         }
       | {
           type: 'nav.to.PageHome'
+          path: string
+        }
+      | {
+          type: 'nav.to.Profiles'
           path: string
         }
   }

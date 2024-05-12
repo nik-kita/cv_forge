@@ -4,7 +4,8 @@ import {
   integrate_router,
   navigate,
   raise_nav_ev,
-} from './actions.nav'
+} from './actions'
+import {use_xstore} from '../xstore'
 
 export const nav_machine = setup({
   types: {
@@ -17,9 +18,7 @@ export const nav_machine = setup({
   },
 }).createMachine({
   id: 'nav',
-  entry: {
-    type: 'integrate_router',
-  },
+  entry: 'integrate_router',
   on: {
     'nav.request_to_navigate': {
       actions: raise(raise_nav_ev),
@@ -36,6 +35,7 @@ export const nav_machine = setup({
   },
   context() {
     return {
+      xstore: use_xstore(),
       router,
       nav_toggle_guard: {
         allow: false,

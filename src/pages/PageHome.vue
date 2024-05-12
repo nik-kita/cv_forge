@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import {use_x} from '@/use_x'
 import {use_xstore} from '@/x/xstore'
-import {ref} from 'vue'
+import {ref, watchEffect} from 'vue'
 
 const {nav, auth} = use_x()
 const {is_user} = use_xstore()
@@ -11,36 +11,20 @@ const auth_value = ref(auth.getSnapshot().value)
 
 nav.subscribe(ns => {
   nav_value.value = ns.value
+  console.log('nav.subscribe', ns)
 })
 auth.subscribe(as => {
   auth_value.value = as.value
+  console.log('auth.subscribe', as)
+})
+
+watchEffect(() => {
+  console.log('is_user', is_user.value)
 })
 </script>
 
 <template>
   <div class="root">
     <h1>Home</h1>
-    <hr />
-    <pre>is_user: {{ is_user }}</pre>
-    <pre>nav: {{ nav_value }}</pre>
-    <pre>auth: {{ auth_value }}</pre>
-    <Button @click="auth.send({type: 'auth.logout'})"
-      >auth.send({type: 'auth.logout'})</Button
-    >
-    <Button
-      @click="auth.send({type: 'auth.sign_in.success'})"
-      >auth.send({type: 'auth.sign_in.success'})</Button
-    >
   </div>
 </template>
-
-<style scoped>
-.root {
-  display: flex;
-  flex-flow: column;
-  gap: 1rem;
-  padding-left: 5rem;
-  padding-top: 5rem;
-  background-color: whitesmoke;
-}
-</style>

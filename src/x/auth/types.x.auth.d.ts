@@ -7,7 +7,7 @@ declare global {
       | {
           type: 'auth.logout'
         }
-    type Ctx = {}
+    type Ctx = {} & x.Xstore
   }
 }
 

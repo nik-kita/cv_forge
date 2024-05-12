@@ -3,6 +3,7 @@ import type {
   RouteLocationNormalized,
 } from 'vue-router'
 import type {nav_machine} from '@/x/nav/nav_machine'
+import type {ActionArgs} from 'xstate'
 
 declare global {
   namespace x.nav {
@@ -12,7 +13,7 @@ declare global {
       nav_toggle_guard: {
         allow: boolean
       }
-    }
+    } & x.Xstore
     export type Ev =
       | {
           type: 'nav.request_to_navigate'
@@ -27,6 +28,8 @@ declare global {
           type: 'nav.to.Profiles'
           path: string
         }
+
+    export type Args = ActionArgs<Ctx, Ev, Ev>
   }
 }
 

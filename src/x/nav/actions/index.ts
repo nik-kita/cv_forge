@@ -1,16 +1,8 @@
 import {assertEvent, type ActionArgs} from 'xstate'
 
-export const raise_nav_ev = ({
-  event,
-}: {
-  event: Extract<
-    x.nav.Ev,
-    {type: 'nav.request_to_navigate'}
-  >
-}) => {
-  console.log('navigate_ev', event)
+export const raise_nav_ev = ({event}: x.nav.Args) => {
+  assertEvent(event, 'nav.request_to_navigate')
   let path = event.to.path
-  console.log(path)
   const {
     meta: {x_nav_ev_name},
   } = event.to
@@ -37,8 +29,7 @@ export const raise_nav_ev = ({
 export const navigate = async ({
   context,
   event,
-}: ActionArgs<x.nav.Ctx, x.nav.Ev, x.nav.Ev>) => {
-  console.log('navigate', event)
+}: x.nav.Args) => {
   assertEvent(event, ['nav.to.PageHome', 'nav.to.Profiles'])
 
   context.nav_toggle_guard.allow = true
@@ -49,13 +40,8 @@ export const navigate = async ({
 export const integrate_router = ({
   context,
   self,
-}: ActionArgs<x.nav.Ctx, x.nav.Ev, x.nav.Ev>) => {
-  console.log('integrate_router')
+}: x.nav.Args) => {
   context.router.beforeEach((to, from) => {
-    console.log(
-      'nav_toggle_guard',
-      context.nav_toggle_guard,
-    )
     if (context.nav_toggle_guard.allow) {
       return true
     }

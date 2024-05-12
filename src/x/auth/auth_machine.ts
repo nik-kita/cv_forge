@@ -1,6 +1,9 @@
 import {setup} from 'xstate'
-import {action_sign_in_success} from './action.sign-in.success'
-import {action_logout} from './action.logout'
+import {use_xstore} from '../xstore'
+import {
+  action_logout,
+  action_sign_in_success,
+} from './actions'
 
 export const auth_machine = setup({
   types: {
@@ -14,7 +17,9 @@ export const auth_machine = setup({
 }).createMachine({
   id: 'auth',
   context() {
-    return {}
+    return {
+      xstore: use_xstore(),
+    }
   },
   initial: 'Start',
   states: {

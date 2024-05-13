@@ -22,11 +22,9 @@ const nik = computed({
 })
 
 if (prev_session) {
-  try {
-    user.value = get_user_info()
-  } catch (err) {
-    console.error(err)
-  }
+  user.value =
+    get_user_info() ??
+    (get_refresh_token() ? {} : undefined)
 }
 
 const is_user = computed(() => {

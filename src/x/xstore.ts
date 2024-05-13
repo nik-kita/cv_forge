@@ -1,7 +1,8 @@
-import {router} from '@/router/router'
+import {get_refresh_token} from '@/local_storage/persistent.tokens'
+import {get_user_info} from '@/local_storage/persistent.xstore'
 import {computed, ref} from 'vue'
 
-const prev_session = localStorage.getItem('refresh_token')
+const prev_session = get_refresh_token()
 const user = ref<{nik?: string}>()
 const nik = computed({
   get() {
@@ -19,16 +20,14 @@ const nik = computed({
 
 if (prev_session) {
   try {
-    user.value = JSON.parse(
-      localStorage.getItem('user') || '{}',
-    )
+    user.value = get_user_info()
   } catch (err) {
     console.error(err)
   }
 }
 
 const is_user = computed(() => {
-  if (user.value && localStorage.getItem('refresh_token')) {
+  if (user.value && get_refresh_token()) {
     return true
   }
 

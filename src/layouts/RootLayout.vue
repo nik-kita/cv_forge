@@ -3,8 +3,8 @@ import {use_x} from '@/use_x'
 import {use_xstore} from '@/x/xstore'
 import {ref} from 'vue'
 import {RouterLink} from 'vue-router'
-import {GoogleLogin} from 'vue3-google-login'
 import type {CallbackTypes} from 'vue3-google-login'
+import {GoogleLogin} from 'vue3-google-login'
 
 const {nav, auth} = use_x()
 const {is_user, nik, viewer_role} = use_xstore()
@@ -45,10 +45,14 @@ const click_logout = async () => {
   <slot></slot>
   <ul>
     <li>
-      <RouterLink to="/home">Home</RouterLink>
+      <RouterLink :to="`/hoe/${nik ? nik : ''}`"
+        >Home</RouterLink
+      >
     </li>
     <li>
-      <RouterLink to="/profiles">Profiles</RouterLink>
+      <RouterLink :to="`/profiles/${nik ? nik : ''}`"
+        >Profiles</RouterLink
+      >
     </li>
   </ul>
   <hr />

@@ -3,6 +3,11 @@ import type {use_xstore} from './xstore'
 
 declare global {
   namespace x {
+    export type Ev =
+      | x.auth.Ev
+      | x.fetcher.Ev
+      | x.fetch.Ev
+      | x.nav.Ev
     export type Xstore = {
       xstore: ReturnType<typeof use_xstore>
     }

@@ -1,6 +1,9 @@
+import type {auth_machine} from './auth_machine'
+
 declare global {
   namespace x.auth {
-    type Ev =
+    export type logic = typeof auth_machine
+    export type Ev =
       | {
           type: 'auth.processing_sign-in.success'
           payload: ApiRes<'post', '/auth/sign-in'>
@@ -18,7 +21,7 @@ declare global {
       | {
           type: 'auth.user.unauthorized'
         }
-    type Ctx = {} & x.Xstore
+    export type Ctx = {} & x.Xstore
   }
 }
 

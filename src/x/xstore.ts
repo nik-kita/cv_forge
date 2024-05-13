@@ -34,11 +34,18 @@ const is_user = computed(() => {
 
   return false
 })
+const viewer_role = ref<
+  | 'viewer'
+  | 'owner'
+  | 'viewer::should_add_own_nik'
+  | 'viewer::can_add_someone_nik'
+>('viewer')
 
 export const use_xstore = () => {
   return {
     is_user,
     user,
     nik,
+    viewer_role,
   }
 }

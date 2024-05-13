@@ -34,6 +34,14 @@ export const router = createRouter({
       },
     },
     {
+      path: '/profiles/:nik',
+      component: PageProfiles,
+      meta: {
+        x_nav_ev_name: 'nav.to.Profiles',
+        maybe_nik_slug: true,
+      },
+    },
+    {
       path: '/:pathMatch(.*)*',
       redirect: '/home',
     },

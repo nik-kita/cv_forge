@@ -6,7 +6,7 @@ import {use_xstore} from '@/x/xstore'
 import {ref} from 'vue'
 
 const {nav, auth} = use_x()
-const {is_user} = use_xstore()
+const {is_user, nik, viewer_role} = use_xstore()
 
 const nav_value = ref(nav.getSnapshot().value)
 const auth_value = ref(auth.getSnapshot().value)
@@ -34,12 +34,23 @@ auth.subscribe(as => {
     <pre>is_user: {{ is_user }}</pre>
     <pre>nav: {{ nav_value }}</pre>
     <pre>auth: {{ auth_value }}</pre>
+    <pre>nik: {{ nik }}</pre>
+    <pre>viewer_role: {{ viewer_role }}</pre>
     <Button @click="auth.send({type: 'auth.logout'})"
       >auth.send({type: 'auth.logout'})</Button
     >
     <Button
       @click="auth.send({type: 'auth.sign_in.success'})"
       >auth.send({type: 'auth.sign_in.success'})</Button
+    >
+  </div>
+  <hr />
+  <div class="root">
+    <Button @click="() => (nik = 'Luffy')"
+      >Add Luffy nikname</Button
+    >
+    <Button @click="() => (nik = 'Zoro')"
+      >Add Zoro nikname</Button
     >
   </div>
 </template>

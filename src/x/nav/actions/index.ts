@@ -1,11 +1,45 @@
-import {assertEvent, type ActionArgs} from 'xstate'
+import {watch, watchEffect} from 'vue'
+import {assertEvent} from 'xstate'
 
-export const raise_nav_ev = ({event}: x.nav.Args) => {
+export const raise_nav_ev = ({
+  event,
+  context,
+}: x.nav.Args) => {
   assertEvent(event, 'nav.request_to_navigate')
   let path = event.to.path
-  const {
-    meta: {x_nav_ev_name},
-  } = event.to
+  const {meta} = event.to
+  const {x_nav_ev_name, maybe_nik_slug} = meta
+  const {is_user, nik, user} = context.xstore
+  const {params} = event.to
+  const nik_slug = params.nik
+
+  if (!nik.value) {
+    if (!maybe_nik_slug) {
+      context.xstore.viewer_role.value = 'viewer'
+    } else {
+      context.xstore.viewer_role.value =
+        nik_slug ? 'viewer' : 'viewer::can_add_someone_nik'
+    }
+  } else {
+    if (maybe_nik_slug) {
+      if (!nik_slug) {
+        context.xstore.viewer_role.value =
+          'viewer::should_add_own_nik'
+      } else if (nik_slug === nik.value) {
+        context.xstore.viewer_role.value = 'owner'
+      } else {
+        context.xstore.viewer_role.value = 'viewer'
+      }
+    }
+  }
+
+  if (
+    context.xstore.viewer_role.value ===
+    'viewer::should_add_own_nik'
+  ) {
+    path += `/${nik.value}`
+    context.xstore.viewer_role.value = 'owner'
+  }
 
   if (x_nav_ev_name === 'nav.to.PageHome') {
     return {
@@ -53,5 +87,15 @@ export const integrate_router = ({
     } satisfies x.nav.Ev)
 
     return false
+  })
+
+  watch([context.xstore.nik], () => {
+    console.log('watch(nik)')
+
+    self.send({
+      type: 'nav.request_to_navigate',
+      to: context.router.currentRoute.value,
+      from: context.router.currentRoute.value,
+    } satisfies x.nav.Ev)
   })
 }

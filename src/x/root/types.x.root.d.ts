@@ -3,6 +3,7 @@ declare global {
     export type Children = {
       auth: 'auth'
       nav: 'nav'
+      fetcher: 'fetcher'
     }
   }
 }

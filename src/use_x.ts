@@ -6,9 +6,11 @@ const init_x = () => {
   const rsnapshot = root.getSnapshot()
   const auth = rsnapshot.children.auth!
   const nav = rsnapshot.children.nav!
+  const fetcher = rsnapshot.children.fetcher!
 
   console.assert(!!auth, 'auth is not defined')
   console.assert(!!nav, 'nav is not defined')
+  console.assert(!!fetcher, 'fetcher is not defined')
   root.start()
 
   return {

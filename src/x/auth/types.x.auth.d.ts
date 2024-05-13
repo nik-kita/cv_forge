@@ -1,3 +1,4 @@
+import type {ActorRefFrom} from 'xstate'
 import type {auth_machine} from './auth_machine'
 
 declare global {

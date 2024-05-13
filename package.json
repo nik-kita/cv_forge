@@ -19,6 +19,7 @@
     "primevue": "^3.52.0",
     "vue": "^3.4.21",
     "vue-router": "^4.3.0",
+    "vue3-google-login": "^2.0.26",
     "xstate": "^5.13.0"
   },
   "devDependencies": {

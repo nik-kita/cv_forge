@@ -1,3 +1,5 @@
+import type {paths} from '@/api/openapi'
+
 declare global {
   export type NavEv_name = Extract<
     x.nav.Ev,

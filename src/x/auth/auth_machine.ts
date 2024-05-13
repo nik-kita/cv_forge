@@ -1,9 +1,10 @@
-import {setup} from 'xstate'
+import {assertEvent, setup} from 'xstate'
 import {use_xstore} from '../xstore'
 import {
   action_logout,
   action_sign_in_success,
 } from './actions'
+import {update_tokens} from '@/local_storage/persistent.tokens'
 
 export const auth_machine = setup({
   types: {
@@ -11,38 +12,75 @@ export const auth_machine = setup({
     events: {} as x.auth.Ev,
   },
   actions: {
-    action_sign_in_success,
-    action_logout,
+    api_logout: function ({context, event}) {
+      // TODO api call
+      context.xstore.clean_auth()
+    },
+    api_auth_success: function ({context, event}) {
+      assertEvent(event, 'auth.processing_sign-in.success')
+      context.xstore.update_auth(event.payload)
+    },
+  },
+  guards: {
+    is_prev_session: function ({context, event}) {
+      return context.xstore.is_user.value
+    },
   },
 }).createMachine({
-  id: 'auth',
-  context() {
+  context: () => {
     return {
       xstore: use_xstore(),
     }
   },
+  id: 'auth',
   initial: 'Start',
   states: {
     Start: {
-      always: {
-        target: 'Guest',
-      },
-    },
-    Guest: {
-      on: {
-        'auth.sign_in.success': {
+      always: [
+        {
           target: 'User',
+          guard: {
+            type: 'is_prev_session',
+          },
         },
-      },
-      entry: 'action_logout',
+        {
+          target: 'Guest',
+        },
+      ],
     },
     User: {
       on: {
-        'auth.logout': {
+        'auth.user.logout': {
           target: 'Guest',
+          actions: 'api_logout',
+        },
+        'auth.user.unauthorized': {
+          target: 'Guest',
+          actions: 'api_logout',
         },
       },
-      entry: 'action_sign_in_success',
+    },
+    Guest: {
+      initial: 'Idle',
+      on: {
+        'auth.guest.sign-in': {
+          target: '#auth.Guest.Processing_sign-in',
+        },
+      },
+      states: {
+        Idle: {},
+        'Processing_sign-in': {
+          on: {
+            'auth.processing_sign-in.success': {
+              target: '#auth.User',
+              actions: 'api_auth_success',
+            },
+            'auth.processing_sign-in.fail': {
+              target: 'Idle',
+            },
+          },
+        },
+      },
     },
   },
 })

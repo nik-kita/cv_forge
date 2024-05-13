@@ -1,14 +1,17 @@
-import {get_refresh_token} from '@/local_storage/persistent.tokens'
+import {
+  get_refresh_token,
+  update_tokens,
+} from '@/local_storage/persistent.tokens'
 import {get_user_info} from '@/local_storage/persistent.xstore'
 import {computed, ref} from 'vue'
 
 const prev_session = get_refresh_token()
-const user = ref<{nik?: string}>()
+const user = ref<{nik?: string | null}>()
 const nik = computed({
   get() {
     return user.value?.nik
   },
-  set(nik?: string | undefined) {
+  set(nik?: string | undefined | null) {
     if (user.value) {
       user.value = {
         ...user.value,
@@ -46,5 +49,15 @@ export const use_xstore = () => {
     user,
     nik,
     viewer_role,
+    clean_auth() {
+      update_tokens()
+      user.value = undefined
+    },
+    update_auth(payload: ApiRes<'post', '/auth/sign-in'>) {
+      update_tokens(payload)
+      user.value = {
+        nik: payload.nik,
+      }
+    },
   }
 }

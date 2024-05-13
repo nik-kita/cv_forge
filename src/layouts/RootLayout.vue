@@ -1,9 +1,10 @@
-<script setup>
-import {RouterLink} from 'vue-router'
-
+<script setup lang="ts">
 import {use_x} from '@/use_x'
 import {use_xstore} from '@/x/xstore'
 import {ref} from 'vue'
+import {RouterLink} from 'vue-router'
+import {GoogleLogin} from 'vue3-google-login'
+import type {CallbackTypes} from 'vue3-google-login'
 
 const {nav, auth} = use_x()
 const {is_user, nik, viewer_role} = use_xstore()
@@ -17,9 +18,30 @@ nav.subscribe(ns => {
 auth.subscribe(as => {
   auth_value.value = as.value
 })
+
+const callback: CallbackTypes.CredentialCallback =
+  async res => {
+    auth.send({
+      type: 'auth.guest.sign-in',
+      payload: {
+        auth_provider: 'google',
+        credential: res.credential,
+      },
+    })
+  }
+const click_logout = async () => {
+  auth.send({
+    type: 'auth.user.logout',
+  })
+}
 </script>
 
 <template>
+  <slot name="header">
+    <GoogleLogin :callback />
+    <br />
+    <Button @click="click_logout">Logout</Button>
+  </slot>
   <slot></slot>
   <ul>
     <li>
@@ -36,13 +58,6 @@ auth.subscribe(as => {
     <pre>auth: {{ auth_value }}</pre>
     <pre>nik: {{ nik }}</pre>
     <pre>viewer_role: {{ viewer_role }}</pre>
-    <Button @click="auth.send({type: 'auth.logout'})"
-      >auth.send({type: 'auth.logout'})</Button
-    >
-    <Button
-      @click="auth.send({type: 'auth.sign_in.success'})"
-      >auth.send({type: 'auth.sign_in.success'})</Button
-    >
   </div>
   <hr />
   <div class="root">

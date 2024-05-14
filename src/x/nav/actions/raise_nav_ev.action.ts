@@ -40,26 +40,16 @@ export const raise_nav_ev = ({
     context.xstore.viewer_role.value = 'owner'
   }
 
-  if (type === 'nav.to.PageHome') {
+  if (maybe_nik_slug || is_user.value) {
     return {
       type,
       path,
-    } as const
-  } else if (type === 'nav.to.PageProfiles') {
-    return {
-      type,
-      path,
-    } as const
-  } else if (type === 'nav.to.PageSettings') {
-    return {
-      type,
-      path,
-    } as const
+    }
   } else {
     path = '/home'
     return {
       type: 'nav.to.PageHome',
       path,
-    } as const
+    }
   }
 }

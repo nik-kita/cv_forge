@@ -63,6 +63,9 @@ const click_logout = async () => {
             >Profiles</RouterLink
           >
         </li>
+        <li>
+          <RouterLink to="/settings">Settings</RouterLink>
+        </li>
       </ul>
     </slot>
   </div>

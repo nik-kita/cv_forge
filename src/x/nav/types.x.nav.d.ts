@@ -25,7 +25,11 @@ declare global {
           path: string
         }
       | {
-          type: 'nav.to.Profiles'
+          type: 'nav.to.PageProfiles'
+          path: string
+        }
+      | {
+          type: 'nav.to.PageSettings'
           path: string
         }
 

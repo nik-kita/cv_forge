@@ -29,7 +29,7 @@ export const router = createRouter({
       path: '/profiles',
       component: PageProfiles,
       meta: {
-        x_nav_ev_name: 'nav.to.Profiles',
+        x_nav_ev_name: 'nav.to.PageProfiles',
         maybe_nik_slug: true,
       },
     },
@@ -37,9 +37,17 @@ export const router = createRouter({
       path: '/profiles/:nik',
       component: PageProfiles,
       meta: {
-        x_nav_ev_name: 'nav.to.Profiles',
+        x_nav_ev_name: 'nav.to.PageProfiles',
         maybe_nik_slug: true,
       },
+    },
+    {
+      path: '/settings',
+      component: PageProfiles,
+      meta: {
+        x_nav_ev_name: 'nav.to.PageSettings',
+        maybe_nik_slug: false
+      }
     },
     {
       path: '/:pathMatch(.*)*',

@@ -46,8 +46,8 @@ export const router = createRouter({
       component: PageProfiles,
       meta: {
         x_nav_ev_name: 'nav.to.PageSettings',
-        maybe_nik_slug: false
-      }
+        maybe_nik_slug: false,
+      },
     },
     {
       path: '/:pathMatch(.*)*',

@@ -8,6 +8,7 @@ declare global {
       | x.fetcher.Ev
       | x.fetch.Ev
       | x.nav.Ev
+      | x.page_settings.Ev
     export type Xstore = {
       xstore: ReturnType<typeof use_xstore>
     }

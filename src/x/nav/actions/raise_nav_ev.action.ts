@@ -44,12 +44,12 @@ export const raise_nav_ev = ({
     return {
       type,
       path,
-    }
+    } as x.nav.Ev
   } else {
     path = '/home'
     return {
       type: 'nav.to.PageHome',
       path,
-    }
+    } as x.nav.Ev
   }
 }

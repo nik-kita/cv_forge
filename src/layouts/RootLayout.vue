@@ -37,26 +37,40 @@ const click_logout = async () => {
 </script>
 
 <template>
-  <slot name="header">
-    <GoogleLogin :callback />
-    <br />
-    <Button @click="click_logout">Logout</Button>
-  </slot>
-  <slot></slot>
-  <ul>
-    <li>
-      <RouterLink :to="`/hoe/${nik ? nik : ''}`"
-        >Home</RouterLink
-      >
-    </li>
-    <li>
-      <RouterLink :to="`/profiles/${nik ? nik : ''}`"
-        >Profiles</RouterLink
-      >
-    </li>
-  </ul>
+  <div class="flex flex-row-reverse justify-between">
+    <slot name="header">
+      <div class="inline-flex justify-end h-10">
+        <GoogleLogin
+          v-if="!is_user"
+          :callback
+        />
+        <Button
+          v-if="is_user"
+          @click="click_logout"
+          >Logout</Button
+        >
+      </div>
+    </slot>
+    <slot name="nav">
+      <ul class="inline-flex gap-2">
+        <li>
+          <RouterLink :to="`/hoe/${nik ? nik : ''}`"
+            >Home</RouterLink
+          >
+        </li>
+        <li>
+          <RouterLink :to="`/profiles/${nik ? nik : ''}`"
+            >Profiles</RouterLink
+          >
+        </li>
+      </ul>
+    </slot>
+  </div>
+  <div class="min-h-[30%] p-2">
+    <slot></slot>
+  </div>
   <hr />
-  <div class="root">
+  <div class="dev">
     <pre>is_user: {{ is_user }}</pre>
     <pre>nav: {{ nav_value }}</pre>
     <pre>auth: {{ auth_value }}</pre>
@@ -64,22 +78,15 @@ const click_logout = async () => {
     <pre>viewer_role: {{ viewer_role }}</pre>
   </div>
   <hr />
-  <div class="root">
-    <Button @click="() => (nik = 'Luffy')"
-      >Add Luffy nikname</Button
-    >
-    <Button @click="() => (nik = 'Zoro')"
-      >Add Zoro nikname</Button
-    >
-  </div>
 </template>
 
 <style scoped>
-.root {
+.dev {
   display: flex;
+  height: 100%;
   flex-flow: column;
   gap: 1rem;
-  padding: 5rem;
+  padding: 1rem;
   background-color: whitesmoke;
 }
 </style>

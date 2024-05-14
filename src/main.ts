@@ -2,9 +2,11 @@ import './assets/main.css'
 // ---
 import Button from 'primevue/button'
 import PrimeVue from 'primevue/config'
+import FloatLabel from 'primevue/floatlabel'
+import InputText from 'primevue/inputtext'
 import 'primevue/resources/themes/aura-light-green/theme.css'
-import GLogin from 'vue3-google-login'
 import {createApp} from 'vue'
+import GLogin from 'vue3-google-login'
 import App from './App.vue'
 import {router} from './router/router'
 
@@ -16,4 +18,6 @@ app.use(GLogin, {
 app.use(router)
 app.use(PrimeVue, {ripple: true})
 app.component('Button', Button)
+app.component('InputText', InputText)
+app.component('FloatLabel', FloatLabel)
 app.mount('#app')

@@ -1,5 +1,12 @@
 import {router} from '@/router/router'
-import {raise, sendParent, setup} from 'xstate'
+import {
+  assign,
+  raise,
+  setup,
+  stopChild,
+  type ActorRefFrom,
+} from 'xstate'
+import {page_settings_machine} from '../page_settings/page_settings_machine'
 import {use_xstore} from '../xstore'
 import {
   integrate_router,
@@ -11,10 +18,27 @@ export const nav_machine = setup({
   types: {
     events: {} as x.nav.Ev,
     context: {} as x.nav.Ctx,
+    children: {} as x.nav.Children,
   },
   actions: {
     navigate,
     integrate_router,
+    unspawn_page_settings: stopChild(({event, system}) => {
+      return system.get('page_settings')
+    }),
+    spawn_page_settings: assign(({spawn, system}) => {
+      if (system.get('page_settings')) return {}
+
+      spawn('page_settings', {
+        id: 'page_settings',
+        systemId: 'page_settings',
+      })
+
+      return {}
+    }),
+  },
+  actors: {
+    page_settings: page_settings_machine,
   },
   guards: {
     is_user: ({context}) => {
@@ -43,12 +67,7 @@ export const nav_machine = setup({
     'nav.to.PageSettings': {
       target: '.PageSettings',
       guard: 'is_user',
-      actions: [
-        'navigate',
-        sendParent({
-          type: 'root.spawn.page_settings',
-        } satisfies x.root.Ev),
-      ],
+      actions: ['navigate', 'spawn_page_settings'],
     },
   },
   context() {

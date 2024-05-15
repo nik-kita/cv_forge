@@ -8,6 +8,9 @@ import type {ActionArgs} from 'xstate'
 declare global {
   namespace x.nav {
     export type logic = ActorRefFrom<typeof nav_machine>
+    export type Children = {
+      page_settings?: 'page_settings'
+    }
     export type Ctx = {
       router: Router
       nav_toggle_guard: {

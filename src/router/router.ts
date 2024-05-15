@@ -43,7 +43,8 @@ export const router = createRouter({
     },
     {
       path: '/settings',
-      component: () => import('@/pages/PageSettings.vue'),
+      component: () =>
+        import('@/pages/settings/PageSettings.vue'),
       meta: {
         x_nav_ev_name: 'nav.to.PageSettings',
         maybe_nik_slug: false,

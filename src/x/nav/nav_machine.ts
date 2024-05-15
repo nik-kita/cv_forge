@@ -1,11 +1,11 @@
 import {router} from '@/router/router'
-import {raise, setup} from 'xstate'
+import {raise, sendParent, setup} from 'xstate'
+import {use_xstore} from '../xstore'
 import {
   integrate_router,
   navigate,
   raise_nav_ev,
 } from './actions'
-import {use_xstore} from '../xstore'
 
 export const nav_machine = setup({
   types: {
@@ -43,7 +43,12 @@ export const nav_machine = setup({
     'nav.to.PageSettings': {
       target: '.PageSettings',
       guard: 'is_user',
-      actions: 'navigate',
+      actions: [
+        'navigate',
+        sendParent({
+          type: 'root.spawn.page_settings',
+        } satisfies x.root.Ev),
+      ],
     },
   },
   context() {

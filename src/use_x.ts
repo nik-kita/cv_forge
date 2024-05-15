@@ -16,6 +16,7 @@ const init_x = () => {
   return {
     nav,
     auth,
+    root,
   }
 }
 

@@ -32,10 +32,11 @@ export const page_settings_machine = setup({
         'page_settings.update_nik',
         'page_settings.add_nik',
       ])
+      console.log('event.payload', event.payload)
       api_to_fetch_logic(
         () => {
           return api_user_update_nik({
-            nik: 'Luffy',
+            nik: event.payload,
             access_token: get_access_token()!,
           })
         },
@@ -131,6 +132,7 @@ export const page_settings_machine = setup({
               on: {
                 'page_settings.add_nik': {
                   target: 'Adding_nik',
+                  actions: 'api_update_nik',
                 },
               },
             },

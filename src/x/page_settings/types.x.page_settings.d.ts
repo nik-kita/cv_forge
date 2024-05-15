@@ -16,8 +16,15 @@ declare global {
       | {
           type: 'page_settings.update_nik_err_showing.cancel'
         }
-      | {type: 'page_settings.update_nik.again'}
-      | {type: 'page_settings.add_nik'}
+      | {
+          type: 'page_settings.update_nik.again'
+          payload: string
+        }
+      | {type: 'page_settings.add_nik'; payload: string}
+      | {
+          type: 'page_settings.adding_nik.again'
+          payload: string
+        }
       | {
           type: 'page_settings.add_nik.success'
           payload: string
@@ -26,7 +33,6 @@ declare global {
       | {
           type: 'page_settings.adding_nik_error_showing.cancel'
         }
-      | {type: 'page_settings.adding_nik.again'}
   }
 }
 

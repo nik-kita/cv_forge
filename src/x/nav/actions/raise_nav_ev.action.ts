@@ -14,7 +14,7 @@ export const raise_nav_ev = ({
 
   if (!nik.value) {
     if (!maybe_nik_slug) {
-      context.xstore.viewer_role.value = 'viewer'
+      context.xstore.viewer_role.value = 'owner'
     } else {
       context.xstore.viewer_role.value =
         nik_slug ? 'viewer' : 'viewer::can_add_someone_nik'
@@ -29,6 +29,8 @@ export const raise_nav_ev = ({
       } else {
         context.xstore.viewer_role.value = 'viewer'
       }
+    } else {
+      context.xstore.viewer_role.value = 'owner'
     }
   }
 

@@ -26,8 +26,14 @@ export const setting_nik_machine = setup({
       assertEvent(event, [
         'page_settings.update_nik.success',
         'page_settings.add_nik.success',
+        'page_settings.rm_nik.success',
       ])
-      context.xstore.nik.value = event.payload
+
+      if (event.type === 'page_settings.rm_nik.success') {
+        context.xstore.nik.value = undefined
+      } else {
+        context.xstore.nik.value = event.payload
+      }
     },
     api_update_nik: function ({
       context,
@@ -75,9 +81,11 @@ export const setting_nik_machine = setup({
   on: {
     'page_settings.add_nik.success': {
       target: '.With_nik',
+      actions: 'update_nik_in_xstore',
     },
     'page_settings.rm_nik.success': {
       target: '.No_nik',
+      actions: 'update_nik_in_xstore',
     },
   },
   initial: 'Init',

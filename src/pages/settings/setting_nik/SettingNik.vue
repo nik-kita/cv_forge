@@ -16,6 +16,7 @@ actor.subscribe(s => {
 </script>
 
 <template>
+  <pre>{{ state }}</pre>
   <WithNik
     v-if="state === 'With_nik'"
     :parent_actor="actor"

@@ -48,6 +48,8 @@ export const raise_nav_ev = ({
       path,
     } as x.nav.Ev
   } else {
+    context.xstore.viewer_role.value =
+      'viewer::can_add_someone_nik'
     path = '/home'
     return {
       type: 'nav.to.PageHome',

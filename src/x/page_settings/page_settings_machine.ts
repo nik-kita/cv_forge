@@ -13,5 +13,8 @@ export const page_settings_machine = setup({
   context: {
     xstore: use_xstore(),
   },
-  entry: spawnChild('setting_nik', {id: 'setting_nik'}),
+  entry: spawnChild('setting_nik', {
+    id: 'setting_nik',
+    systemId: 'setting_nik',
+  }),
 })

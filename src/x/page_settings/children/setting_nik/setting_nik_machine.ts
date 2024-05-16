@@ -70,6 +70,10 @@ export const setting_nik_machine = setup({
   },
   guards: {
     has_nik: function ({context, event}) {
+      console.log(
+        'context.xstore.nik.value',
+        context.xstore.nik.value,
+      )
       return !!context.xstore.nik.value
     },
   },

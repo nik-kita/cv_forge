@@ -9,15 +9,12 @@ const router = createRouter({
       component: PageHome,
     },
     {
-      path: '/sign-in',
-      component: () =>
-        import('@/page/sign-in/PageSignIn.vue'),
-    },
-    {
       path: '/:pathMatch(.*)*',
       redirect: '/home',
     },
   ],
+  linkActiveClass: 'link-active',
+  linkExactActiveClass: 'link-exact-active',
 })
 
 export default router

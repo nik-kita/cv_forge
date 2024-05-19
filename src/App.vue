@@ -19,11 +19,11 @@ const {click_logout, click_sign_in, is_logged_in} =
       v-else
       :callback="click_sign_in"
     />
-    <RouterView />
     <div>
       <NavBar />
     </div>
   </div>
+  <RouterView />
 </template>
 
 <style>

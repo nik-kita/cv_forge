@@ -4,6 +4,8 @@ import Accordion from 'primevue/accordion'
 import AccordionTab from 'primevue/accordiontab'
 import Button from 'primevue/button'
 import PrimeVue from 'primevue/config'
+import InputText from 'primevue/inputtext'
+import Textarea from 'primevue/textarea'
 import 'primevue/resources/themes/aura-light-green/theme.css'
 import {createApp} from 'vue'
 import GLogin from 'vue3-google-login'
@@ -20,4 +22,6 @@ app.use(PrimeVue, {ripple: true})
 app.component('Button', Button)
 app.component('Accordion', Accordion)
 app.component('AccordionTab', AccordionTab)
+app.component('Textarea', Textarea)
+app.component('InputText', InputText)
 app.mount('#app')

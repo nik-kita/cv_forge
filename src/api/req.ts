@@ -28,9 +28,9 @@ const api_request = async <
     throw response
   }
 
-  return is_json ?
-      (response.json() as Promise<ApiRes<M, E>>)
-    : undefined
+  return (is_json ? response.json() : undefined) as Promise<
+    ApiRes<M, E>
+  >
 }
 
 export const req = {

@@ -42,7 +42,6 @@ export const with_nik_machine = setup({
           self,
           system,
           emit_on_success: () => {
-            console.log('success!')
             return {
               type: 'page_settings.rm_nik.success',
             }

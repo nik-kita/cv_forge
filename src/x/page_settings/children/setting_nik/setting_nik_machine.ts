@@ -45,7 +45,6 @@ export const setting_nik_machine = setup({
         'page_settings.update_nik',
         'page_settings.add_nik',
       ])
-      console.log('event.payload', event.payload)
       api_to_fetch_logic(
         () => {
           return api_user_update_nik({
@@ -70,10 +69,6 @@ export const setting_nik_machine = setup({
   },
   guards: {
     has_nik: function ({context, event}) {
-      console.log(
-        'context.xstore.nik.value',
-        context.xstore.nik.value,
-      )
       return !!context.xstore.nik.value
     },
   },

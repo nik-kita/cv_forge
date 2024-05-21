@@ -12,7 +12,10 @@ declare global {
       emit_on_fail?: (...args: any[]) => x.Ev
       consumer_ref?: AnyActorRef
     }
-    export type Ctx = Input & x.Xstore
+    export type Ctx = Input &
+      x.Xstore & {
+        is_repeat_needed: boolean
+      }
     export type Ev =
       | {type: 'fetch.refresh.fail'}
       | {

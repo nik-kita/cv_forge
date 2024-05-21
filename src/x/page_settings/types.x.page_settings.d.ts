@@ -15,6 +15,7 @@ declare global {
         no_nik?: 'no_nik'
       }
       export type Ev =
+        | {type: 'page_settings.reset_machine'}
         | {type: 'page_settings.rm_nik'}
         | {type: 'page_settings.rm_nik.success'}
         | {type: 'page_settings.rm_nik.fail'}

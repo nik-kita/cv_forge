@@ -86,6 +86,9 @@ export const setting_nik_machine = setup({
       target: '.No_nik',
       actions: 'update_nik_in_xstore',
     },
+    'page_settings.reset_machine': {
+      target: '.Init',
+    },
   },
   initial: 'Init',
   states: {
@@ -104,11 +107,9 @@ export const setting_nik_machine = setup({
     },
     With_nik: {
       entry: spawnChild('with_nik', {id: 'with_nik'}),
-      exit: stopChild('with_nik'),
     },
     No_nik: {
       entry: spawnChild('no_nik', {id: 'no_nik'}),
-      exit: stopChild('no_nik'),
     },
   },
 })

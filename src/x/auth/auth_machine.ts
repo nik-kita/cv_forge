@@ -1,5 +1,5 @@
 import {api_sign_in} from '@/api/api_sign_in'
-import {assertEvent, setup} from 'xstate'
+import {assertEvent, setup, type ActorRefFrom} from 'xstate'
 import {api_to_fetch_logic} from '../utils/api_to_fetch_logic'
 import {use_xstore} from '../xstore'
 
@@ -9,9 +9,20 @@ export const auth_machine = setup({
     events: {} as x.auth.Ev,
   },
   actions: {
-    api_logout: function ({context, event}) {
+    api_logout: function ({context, event, system}) {
       // TODO api call
       context.xstore.clean_auth()
+    },
+    on_auth_change: function ({system}) {
+      const setting_nik = system.get('setting_nik') as
+        | ActorRefFrom<x.page_settings.setting_nik.logic>
+        | undefined
+
+      if (setting_nik) {
+        setting_nik.send({
+          type: 'page_settings.reset_machine',
+        })
+      }
     },
     api_sign_in: function ({context, event, system, self}) {
       assertEvent(event, 'auth.guest.sign-in')
@@ -28,7 +39,7 @@ export const auth_machine = setup({
         }),
       })
     },
-    api_auth_success: function ({context, event}) {
+    api_auth_success: function ({context, event, system}) {
       assertEvent(event, 'auth.processing_sign-in.success')
       context.xstore.update_auth(event.payload)
     },
@@ -61,6 +72,7 @@ export const auth_machine = setup({
       ],
     },
     User: {
+      entry: 'on_auth_change',
       on: {
         'auth.user.logout': {
           target: 'Guest',
@@ -73,6 +85,7 @@ export const auth_machine = setup({
       },
     },
     Guest: {
+      entry: 'on_auth_change',
       initial: 'Idle',
       on: {
         'auth.guest.sign-in': {

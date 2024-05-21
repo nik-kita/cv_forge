@@ -26,9 +26,6 @@ export const fetch_machine = setup({
     emit_refresh_start: sendParent({
       type: 'fetcher.refresh.start',
     } satisfies x.fetcher.Ev),
-    emit_logout: sendTo('auth', {
-      type: 'auth.user.logout',
-    } satisfies x.auth.Ev),
     emit_refresh_success: sendParent({
       type: 'fetcher.refresh.success',
     } satisfies x.fetcher.Ev),
@@ -262,7 +259,7 @@ export const fetch_machine = setup({
     },
     Global_unauthorized_fail: {
       type: 'final',
-      entry: ['emit_logout', 'emit_im_done'],
+      entry: ['emit_refresh_fail', 'emit_im_done'],
     },
   },
 })

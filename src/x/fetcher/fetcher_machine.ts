@@ -1,6 +1,5 @@
 import type {ActorRefFrom} from 'xstate'
 import {assertEvent, assign, setup, stopChild} from 'xstate'
-import type {auth_machine} from '../auth/auth_machine'
 import {fetch_machine} from './fetch_machine'
 
 /**
@@ -109,6 +108,17 @@ export const fetcher_machine = setup({
     },
     'fetcher.refresh.fail': {
       target: '.Normal',
+      actions: ({system}) => {
+        const ev = {
+          type: 'auth.user.unauthorized',
+        } satisfies x.auth.Ev
+
+        const auth = system.get(
+          'auth',
+        ) as ActorRefFrom<x.auth.logic>
+
+        auth.send(ev)
+      },
     },
   },
 })

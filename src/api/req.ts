@@ -74,7 +74,7 @@ export const req = {
 
   delete: async <E extends Endpoint>(
     endpoint: string,
-    access_token?: string,
+    access_token: string,
     init?: OmitStrict<RequestInit, 'body'>,
   ) =>
     api_request<'delete', E>(

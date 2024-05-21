@@ -55,11 +55,13 @@ export const fetch_machine = setup({
       async ({input}: {input: x.fetch.Ctx}) => {
         try {
           const success = await input.api_call()
+          console.info('fetch::success', success)
           if (input.emit_on_success) {
             const ev = input.emit_on_success(success)
             input.consumer_ref.send(ev)
           }
         } catch (err) {
+          console.info('fetch::err', err)
           if (input.emit_on_fail) {
             input.consumer_ref.send(input.emit_on_fail(err))
           }

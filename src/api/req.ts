@@ -9,6 +9,7 @@ const api_request = async <
   access_token?: string,
   body?: ApiReq<M, E>,
   init?: OmitStrict<RequestInit, 'body'>,
+  is_json = true,
 ) => {
   const response = await fetch(api_url + endpoint, {
     ...init,
@@ -27,7 +28,9 @@ const api_request = async <
     throw response
   }
 
-  return response.json() as Promise<ApiRes<M, E>>
+  return is_json ?
+      (response.json() as Promise<ApiRes<M, E>>)
+    : undefined
 }
 
 export const req = {
@@ -83,6 +86,7 @@ export const req = {
       access_token,
       undefined,
       init,
+      false,
     ),
   public_get: async <E extends Endpoint>(
     endpoint: string,
@@ -132,5 +136,6 @@ export const req = {
       undefined,
       undefined,
       init,
+      false,
     ),
 }

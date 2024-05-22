@@ -75,12 +75,15 @@ export const with_nik_machine = setup({
           emit_on_success: res => {
             return {
               type: 'page_settings.update_nik.success',
-              payload: res.nik,
+              payload: res.nik!,
             }
           },
-          emit_on_fail: () => {
+          emit_on_fail: (
+            err: ApiErr<'put', '/user/nik/{nik}', 400>,
+          ) => {
             return {
               type: 'page_settings.update_nik.fail',
+              payload: err.beauty_message || err.message,
             }
           },
         },

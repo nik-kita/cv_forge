@@ -153,6 +153,13 @@ export interface components {
       /** Profile Id */
       profile_id?: number | null
     }
+    /** Exception_400 */
+    Exception_400: {
+      /** Message */
+      message: string
+      /** Beauty Message */
+      beauty_message?: string | null
+    }
     /** ExperienceReq */
     ExperienceReq: {
       /** Company */
@@ -337,7 +344,7 @@ export interface components {
     /** PublicUserRes */
     PublicUserRes: {
       /** Nik */
-      nik: string
+      nik: string | null
     }
     /** Refresh */
     Refresh: {
@@ -619,6 +626,12 @@ export interface operations {
       200: {
         content: {
           'application/json': components['schemas']['PublicUserRes']
+        }
+      }
+      /** @description Bad Request */
+      400: {
+        content: {
+          'application/json': components['schemas']['Exception_400']
         }
       }
       /** @description Validation Error */

@@ -27,7 +27,10 @@ declare global {
             type: 'page_settings.update_nik.success'
             payload: string
           }
-        | {type: 'page_settings.update_nik.fail'}
+        | {
+            type: 'page_settings.update_nik.fail'
+            payload: string
+          }
         | {
             type: 'page_settings.update_nik_err_showing.cancel'
           }
@@ -44,7 +47,10 @@ declare global {
             type: 'page_settings.add_nik.success'
             payload: string
           }
-        | {type: 'page_settings.add_nik.fail'}
+        | {
+            type: 'page_settings.add_nik.fail'
+            payload: string
+          }
         | {
             type: 'page_settings.adding_nik_error_showing.cancel'
           }

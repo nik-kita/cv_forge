@@ -15,6 +15,11 @@ declare global {
     M extends Method,
     T extends keyof paths,
   > = paths[T][M]['responses']['200']['content']['application/json']
+  type ApiErr<
+    M extends Method,
+    T extends keyof paths,
+    S extends number,
+  > = paths[T][M]['responses'][`${S}`]['content']['application/json']
 }
 
 export {}

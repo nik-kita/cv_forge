@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "api:types": "curl http://localhost:3000/openapi.json > openapi.api.json && npx openapi-typescript ./openapi.api.json -o ./src/api/openapi.d.ts & npm run format & npm run lint",
+    "api:types": "curl http://localhost:3000/openapi.json > openapi.api.json && npx openapi-typescript ./openapi.api.json -o ./src/api/openapi.d.ts & npm run lint & npm run format",
     "dev": "vite",
     "build": "run-p type-check \"build-only {@}\" --",
     "preview": "vite preview",

@@ -81,6 +81,18 @@ export const with_nik_machine = setup({
         },
       )
     },
+    send_parent_update_nik_success: sendParent(
+      ({event, system}) => {
+        assertEvent(
+          event,
+          'page_settings.update_nik.success',
+        )
+        return {
+          type: 'page_settings.update_nik.success',
+          payload: event.payload,
+        } satisfies x.page_settings.setting_nik.Ev
+      },
+    ),
   },
 }).createMachine({
   id: 'with_nik',
@@ -115,6 +127,7 @@ export const with_nik_machine = setup({
       entry: 'api_update_nik',
       on: {
         'page_settings.update_nik.success': {
+          actions: 'send_parent_update_nik_success',
           target: 'Idle',
         },
         'page_settings.update_nik.fail': {

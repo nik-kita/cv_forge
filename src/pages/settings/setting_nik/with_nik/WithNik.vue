@@ -9,7 +9,20 @@ const {parent_actor} = defineProps<{
 }>()
 const actor = parent_actor.getSnapshot().children.with_nik!
 const state = ref(actor.getSnapshot().value)
+const updating = ref(state.value === 'Updating_nik')
+const subscription = actor.subscribe(s => {
+  const sv = s.value
+  const actual_updating = sv === 'Updating_nik'
+  state.value = sv
 
+  if (updating.value && !actual_updating) {
+    updating.value = actual_updating
+    is_show_input.value = false
+  }
+})
+onUnmounted(() => {
+  subscription.unsubscribe()
+})
 // ===
 const new_nik = ref(nik.value ?? '')
 const is_show_input = ref(false)
@@ -22,7 +35,6 @@ const click_change = () => {
 const click_i_want_to_change = () => {
   is_show_input.value = true
 }
-const changing = ref(false)
 </script>
 <template>
   <h4>Hi, {{ nik }}</h4>
@@ -45,6 +57,6 @@ const changing = ref(false)
     v-model="new_nik"
     @keyup.enter="click_change"
     v-if="is_show_input"
-    :disabled="changing"
+    :disabled="updating"
   />
 </template>

@@ -27,7 +27,7 @@ declare global {
             type: 'page_settings.update_nik.success'
             payload: string
           }
-        | {type: 'page_settings.udpate_nik.fail'}
+        | {type: 'page_settings.update_nik.fail'}
         | {
             type: 'page_settings.update_nik_err_showing.cancel'
           }

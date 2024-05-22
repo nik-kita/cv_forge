@@ -35,37 +35,6 @@ export const setting_nik_machine = setup({
         context.xstore.nik.value = event.payload
       }
     },
-    api_update_nik: function ({
-      context,
-      event,
-      system,
-      self,
-    }) {
-      assertEvent(event, [
-        'page_settings.update_nik',
-        'page_settings.add_nik',
-      ])
-      api_to_fetch_logic(
-        () => {
-          return api_user_update_nik({
-            nik: event.payload,
-            access_token: get_access_token()!,
-          })
-        },
-        {
-          system,
-          self,
-          is_access_token_required: true,
-          emit_on_success: res => ({
-            type:
-              event.type === 'page_settings.add_nik' ?
-                'page_settings.add_nik.success'
-              : 'page_settings.update_nik.success',
-            payload: res.nik,
-          }),
-        },
-      )
-    },
   },
   guards: {
     has_nik: function ({context, event}) {
@@ -88,6 +57,9 @@ export const setting_nik_machine = setup({
     },
     'page_settings.reset_machine': {
       target: '.Init',
+    },
+    'page_settings.update_nik.success': {
+      actions: 'update_nik_in_xstore',
     },
   },
   initial: 'Init',

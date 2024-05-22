@@ -1,4 +1,5 @@
 import {api_delete_nik} from '@/api/api_delete_nik'
+import {api_user_update_nik} from '@/api/api_user_update_nik'
 import {get_access_token} from '@/local_storage/persistent.tokens'
 import {api_to_fetch_logic} from '@/x/utils/api_to_fetch_logic'
 import {use_xstore} from '@/x/xstore'
@@ -52,6 +53,34 @@ export const with_nik_machine = setup({
         },
       )
     },
+    api_update_nik: function ({
+      context,
+      event,
+      system,
+      self,
+    }) {
+      assertEvent(event, 'page_settings.update_nik')
+      api_to_fetch_logic(
+        () => {
+          return api_user_update_nik({
+            access_token: get_access_token()!,
+            nik: event.payload,
+          })
+        },
+        {
+          system,
+          self,
+          is_access_token_required: true,
+
+          emit_on_success: res => {
+            return {
+              type: 'page_settings.update_nik.success',
+              payload: res.nik,
+            }
+          },
+        },
+      )
+    },
   },
 }).createMachine({
   id: 'with_nik',
@@ -83,11 +112,12 @@ export const with_nik_machine = setup({
       },
     },
     Updating_nik: {
+      entry: 'api_update_nik',
       on: {
         'page_settings.update_nik.success': {
           target: 'Idle',
         },
-        'page_settings.udpate_nik.fail': {
+        'page_settings.update_nik.fail': {
           target: 'Update_nik_err_showing',
         },
       },

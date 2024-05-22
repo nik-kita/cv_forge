@@ -31,6 +31,7 @@ const click_change = () => {
     type: 'page_settings.update_nik',
     payload: new_nik.value,
   })
+  updating.value = true
 }
 const click_i_want_to_change = () => {
   is_show_input.value = true

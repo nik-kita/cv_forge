@@ -78,6 +78,11 @@ export const with_nik_machine = setup({
               payload: res.nik,
             }
           },
+          emit_on_fail: () => {
+            return {
+              type: 'page_settings.update_nik.fail',
+            }
+          },
         },
       )
     },

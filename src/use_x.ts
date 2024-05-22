@@ -1,8 +1,12 @@
 import {createActor} from 'xstate'
 import {root_machine} from './x/root/root_machine'
+import {createBrowserInspector} from '@statelyai/inspect'
 
 const init_x = () => {
-  const root = createActor(root_machine)
+  const {inspect} = createBrowserInspector()
+  const root = createActor(root_machine, {
+    inspect,
+  })
   const rsnapshot = root.getSnapshot()
   const auth = rsnapshot.children.auth!
   const nav = rsnapshot.children.nav!

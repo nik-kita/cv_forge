@@ -80,7 +80,7 @@ const click_change = () => {
   <InputText
     ref="input_ref"
     v-model="new_nik"
-    @keydown.self.enter="click_change"
+    @keydown.enter="click_change"
     v-if="is_show_input && state !== 'Deleting_nik'"
     :disabled="state === 'Updating_nik'"
   />

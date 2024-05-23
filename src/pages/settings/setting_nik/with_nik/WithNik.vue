@@ -10,7 +10,6 @@ const {parent_actor} = defineProps<{
 const actor = parent_actor.getSnapshot().children.with_nik!
 const state = ref(actor.getSnapshot().value)
 const is_show_input = ref(false)
-const err_message = ref('')
 const subscription = actor.subscribe(s => {
   const sv = s.value
   state.value = sv

@@ -3,7 +3,6 @@ import {get_refresh_token} from '@/local_storage/persistent.tokens'
 import {fn_to_promise_logic} from '@/x/utils/fn_to_promise_logic'
 import {
   assertEvent,
-  assign,
   fromPromise,
   sendParent,
   setup,
@@ -17,6 +16,20 @@ export const fetch_machine = setup({
     events: {} as x.fetch.Ev,
   },
   actions: {
+    success: ({event}) => {
+      console.log('success action')
+      assertEvent(event, 'xstate.done.actor.req')
+      event.output.emit_on_success()
+    },
+    fail: ({event}) => {
+      console.log('fail action')
+      assertEvent(event, 'xstate.error.actor.req')
+      const emit_err = event.error.err_container[1]
+
+      if (emit_err) {
+        emit_err()
+      }
+    },
     emit_im_done: sendParent(({self}) => {
       return {
         type: 'fetcher.please_kill_me_because_i_am_done',
@@ -46,9 +59,6 @@ export const fetch_machine = setup({
         context.xstore.update_auth(event.output)
       }
     },
-    mark_repeat_is_not_needed: assign({
-      is_repeat_needed: false,
-    }),
   },
   actors: {
     req: fromPromise(
@@ -58,17 +68,24 @@ export const fetch_machine = setup({
           console.info('fetch::success', success)
           if (input.emit_on_success) {
             const ev = input.emit_on_success(success)
-            input.consumer_ref.send(ev)
+            return {
+              emit_on_success: () =>
+                input.consumer_ref.send(ev),
+            }
           }
         } catch (err) {
           console.info('fetch::err', err)
-          if (
-            input.emit_on_fail &&
-            !input.is_repeat_needed
-          ) {
-            input.consumer_ref.send(input.emit_on_fail(err))
+
+          const err_container = [err]
+
+          if (input.emit_on_fail) {
+            const emit_on_fail = input.emit_on_fail
+            err_container.push(() =>
+              input.consumer_ref.send(emit_on_fail(err)),
+            )
           }
-          throw err
+
+          throw {err_container}
         }
       },
     ),
@@ -95,9 +112,12 @@ export const fetch_machine = setup({
       return context.is_refresh_processing
     },
     is_error_access_expired({event}) {
+      console.log('is_error_access_expired', event)
       assertEvent(event, 'xstate.error.actor.req')
 
-      return [401, 403].includes(event.error.status)
+      return [401, 403].includes(
+        event.error.err_container[0].status,
+      )
     },
   },
 }).createMachine({
@@ -108,9 +128,6 @@ export const fetch_machine = setup({
     return {
       ...input,
       xstore: use_xstore(),
-      is_repeat_needed:
-        input.is_access_token_required &&
-        !input.is_refresh_processing,
     }
   },
   id: 'fetch',
@@ -175,17 +192,16 @@ export const fetch_machine = setup({
     },
     Fail: {
       type: 'final',
-      entry: ['emit_im_done'],
+      entry: ['fail', 'emit_im_done'],
     },
     Success: {
       type: 'final',
-      entry: ['emit_im_done'],
+      entry: ['success', 'emit_im_done'],
     },
     Waiting_for_refresh: {
       on: {
         'fetch.refresh.success': {
           target: 'Pending_repeated_req',
-          actions: ['mark_repeat_is_not_needed'],
         },
         'fetch.refresh.fail': {
           target: 'Fail',
@@ -247,7 +263,6 @@ export const fetch_machine = setup({
           actions: [
             'update_tokens_after_success_refresh',
             'emit_refresh_success',
-            'mark_repeat_is_not_needed',
           ],
         },
         onError: {

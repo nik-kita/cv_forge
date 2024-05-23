@@ -12,19 +12,27 @@ declare global {
     export type Xstore = {
       xstore: ReturnType<typeof use_xstore>
     }
+    export type SuccessDoneActorEv<
+      Id extends string,
+      T,
+    > = OmitReplace<
+      DoneActorEvent<T>,
+      {
+        type: `xstate.done.actor.${Id}`
+      }
+    >
+    export type FailDoneActorEv<
+      Id extends string,
+      T,
+    > = OmitReplace<
+      ErrorActorEvent<T>,
+      {
+        type: `xstate.error.actor.${Id}`
+      }
+    >
     export type DoneActorEv<Id extends string, T> =
-      | OmitReplace<
-          DoneActorEvent<T>,
-          {
-            type: `xstate.done.actor.${Id}`
-          }
-        >
-      | OmitReplace<
-          ErrorActorEvent<T>,
-          {
-            type: `xstate.error.actor.${Id}`
-          }
-        >
+      | SuccessDoneActorEv<Id, T>
+      | FailDoneActorEv<Id, T>
   }
 }
 

@@ -12,10 +12,7 @@ declare global {
       emit_on_fail?: (...args: any[]) => x.Ev
       consumer_ref?: AnyActorRef
     }
-    export type Ctx = Input &
-      x.Xstore & {
-        is_repeat_needed: boolean
-      }
+    export type Ctx = Input & x.Xstore & {}
     export type Ev =
       | {type: 'fetch.refresh.fail'}
       | {
@@ -25,7 +22,21 @@ declare global {
           'api_refresh',
           ApiRes<'post', '/auth/refresh'>
         >
-      | x.DoneActorEv<'req', Response>
+      | x.SuccessDoneActorEv<
+          'req',
+          {
+            emit_on_success: () => void
+          }
+        >
+      | x.FailDoneActorEv<
+          'req',
+          {
+            err_container: [
+              err: Response,
+              emit_on_fail?: () => void,
+            ]
+          }
+        >
   }
 }
 

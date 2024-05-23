@@ -16,23 +16,20 @@ const err_message = ref('')
 const {focused: is_focused_input} = useFocus(input_ref, {
   initialValue: is_show_input.value,
 })
-const subscription = actor.subscribe(async s => {
-  const sv = s.value
-  state.value = sv
-  if (sv === 'Idle') {
-    is_show_input.value = false
-  } else if (sv === 'Update_nik_err_showing') {
-    await nextTick()
-    is_focused_input.value = true
-  }
-  console.log(s.context.client_err_message)
+onUnmounted(
+  actor.subscribe(async s => {
+    const sv = s.value
+    state.value = sv
+    if (sv === 'Idle') {
+      is_show_input.value = false
+    } else if (sv === 'Update_nik_err_showing') {
+      await nextTick()
+      is_focused_input.value = true
+    }
 
-  err_message.value = s.context.client_err_message ?? ''
-})
-onUnmounted(() => {
-  subscription.unsubscribe()
-})
-// ===
+    err_message.value = s.context.client_err_message ?? ''
+  }).unsubscribe,
+)
 const new_nik = ref(nik.value ?? '')
 const click_i_want_to_change = async () => {
   is_show_input.value = true
@@ -57,44 +54,48 @@ const click_change = () => {
 }
 </script>
 <template>
-  <h4>Hi, {{ nik }}</h4>
-  <Button
-    v-show="
-      !is_show_input &&
-      state !== 'Updating_nik' &&
-      state !== 'Update_nik_err_showing'
-    "
-    :disabled="state === 'Deleting_nik'"
-    severity="danger"
-    @click="actor.send({type: 'page_settings.rm_nik'})"
-    >I want to delete my nik ({{ nik }})</Button
+  <div
+    class="flex flex-col items-start gap-2 *:px-2 *:py-1"
   >
-  <Button
-    v-show="!is_show_input && state === 'Idle'"
-    @click="click_i_want_to_change"
-    >I want to change my nik</Button
-  >
-  <Button
-    :disabled="state === 'Updating_nik'"
-    v-show="
-      is_show_input &&
-      (state === 'Idle' ||
-        state === 'Update_nik_err_showing')
-    "
-    @click="click_change"
-    >Change</Button
-  >
-  <InputText
-    ref="input_ref"
-    v-model="new_nik"
-    @keydown.enter="click_change"
-    v-if="is_show_input && state !== 'Deleting_nik'"
-    :disabled="state === 'Updating_nik'"
-  />
-  <InlineMessage
-    severity="error"
-    v-show="err_message"
-    >{{ err_message }}</InlineMessage
-  >
-  {{ state }}
+    <h2>Hi, {{ nik }}</h2>
+    <Button
+      v-show="
+        !is_show_input &&
+        state !== 'Updating_nik' &&
+        state !== 'Update_nik_err_showing'
+      "
+      :disabled="state === 'Deleting_nik'"
+      severity="danger"
+      @click="actor.send({type: 'page_settings.rm_nik'})"
+      >I want to delete my nik ({{ nik }})</Button
+    >
+    <Button
+      v-show="!is_show_input && state === 'Idle'"
+      @click="click_i_want_to_change"
+      >I want to change my nik</Button
+    >
+
+    <InputText
+      ref="input_ref"
+      v-model="new_nik"
+      @keydown.enter="click_change"
+      v-if="is_show_input && state !== 'Deleting_nik'"
+      :disabled="state === 'Updating_nik'"
+    />
+    <Button
+      :disabled="state === 'Updating_nik'"
+      v-show="
+        is_show_input &&
+        (state === 'Idle' ||
+          state === 'Update_nik_err_showing')
+      "
+      @click="click_change"
+      >Change</Button
+    >
+    <InlineMessage
+      severity="error"
+      v-show="err_message"
+      >{{ err_message }}</InlineMessage
+    >
+  </div>
 </template>

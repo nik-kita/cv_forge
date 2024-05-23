@@ -1,11 +1,9 @@
 <script setup lang="ts">
-import {use_xstore} from '@/x/xstore'
 import {ref} from 'vue'
 import type {ActorRefFrom} from 'xstate'
-import WithNik from './with_nik/WithNik.vue'
 import NoNik from './no_nik/NoNik.vue'
+import WithNik from './with_nik/WithNik.vue'
 
-const {nik} = use_xstore()
 const {actor} = defineProps<{
   actor: ActorRefFrom<x.page_settings.setting_nik.logic>
 }>()
@@ -16,7 +14,6 @@ actor.subscribe(s => {
 </script>
 
 <template>
-  <pre>{{ state }}</pre>
   <WithNik
     v-if="state === 'With_nik'"
     :parent_actor="actor"

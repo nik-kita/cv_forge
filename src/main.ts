@@ -1,9 +1,9 @@
 import './assets/main.css'
 // ---
-import InlineMessage from 'primevue/inlinemessage'
 import Button from 'primevue/button'
 import PrimeVue from 'primevue/config'
 import FloatLabel from 'primevue/floatlabel'
+import InlineMessage from 'primevue/inlinemessage'
 import InputText from 'primevue/inputtext'
 import 'primevue/resources/themes/aura-light-green/theme.css'
 import {createApp} from 'vue'

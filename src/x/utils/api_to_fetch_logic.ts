@@ -17,7 +17,7 @@ export const api_to_fetch_logic = <
     emit_on_success?: (
       res: Awaited<ReturnType<typeof api_call>>,
     ) => x.Ev
-    emit_on_fail?: (err: any) => x.Ev
+    emit_on_fail?: x.fetch.Input['emit_on_fail']
     system: ActorSystem<any>
     self: AnyActorRef
   } & Pick<_Payload, 'is_access_token_required'>,

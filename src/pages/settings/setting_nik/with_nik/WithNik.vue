@@ -12,6 +12,7 @@ const actor = parent_actor.getSnapshot().children.with_nik!
 const state = ref(actor.getSnapshot().value)
 const is_show_input = ref(false)
 const input_ref = ref()
+const err_message = ref('')
 const {focused: is_focused_input} = useFocus(input_ref, {
   initialValue: is_show_input.value,
 })
@@ -24,6 +25,9 @@ const subscription = actor.subscribe(async s => {
     await nextTick()
     is_focused_input.value = true
   }
+  console.log(s.context.client_err_message)
+
+  err_message.value = s.context.client_err_message ?? ''
 })
 onUnmounted(() => {
   subscription.unsubscribe()
@@ -87,4 +91,10 @@ const click_change = () => {
     v-if="is_show_input && state !== 'Deleting_nik'"
     :disabled="state === 'Updating_nik'"
   />
+  <InlineMessage
+    severity="error"
+    v-show="err_message"
+    >{{ err_message }}</InlineMessage
+  >
+  {{ state }}
 </template>

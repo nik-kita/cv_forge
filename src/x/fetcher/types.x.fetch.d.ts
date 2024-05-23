@@ -9,7 +9,9 @@ declare global {
       auth_actor: ActorRefFrom<x.auth.logic>
       api_call: () => Promise<any>
       emit_on_success?: (...args: any[]) => x.Ev
-      emit_on_fail?: (...args: any[]) => x.Ev
+      emit_on_fail?: (
+        ...args: any[]
+      ) => x.Ev | Promise<x.Ev>
       consumer_ref?: AnyActorRef
     }
     export type Ctx = Input & x.Xstore & {}
@@ -33,7 +35,7 @@ declare global {
           {
             err_container: [
               err: Response,
-              emit_on_fail?: () => void,
+              emit_on_fail?: () => void | Promise<void>,
             ]
           }
         >

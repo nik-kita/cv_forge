@@ -17,12 +17,10 @@ export const fetch_machine = setup({
   },
   actions: {
     success: ({event}) => {
-      console.log('success action')
       assertEvent(event, 'xstate.done.actor.req')
       event.output.emit_on_success()
     },
     fail: ({event}) => {
-      console.log('fail action')
       assertEvent(event, 'xstate.error.actor.req')
       const emit_err = event.error.err_container[1]
 
@@ -80,8 +78,10 @@ export const fetch_machine = setup({
 
           if (input.emit_on_fail) {
             const emit_on_fail = input.emit_on_fail
-            err_container.push(() =>
-              input.consumer_ref.send(emit_on_fail(err)),
+            err_container.push(async () =>
+              input.consumer_ref.send(
+                await emit_on_fail(err),
+              ),
             )
           }
 
@@ -112,7 +112,6 @@ export const fetch_machine = setup({
       return context.is_refresh_processing
     },
     is_error_access_expired({event}) {
-      console.log('is_error_access_expired', event)
       assertEvent(event, 'xstate.error.actor.req')
 
       return [401, 403].includes(

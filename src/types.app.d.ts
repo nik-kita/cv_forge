@@ -19,7 +19,11 @@ declare global {
     M extends Method,
     T extends keyof paths,
     S extends number,
-  > = paths[T][M]['responses'][`${S}`]['content']['application/json']
+  > = {
+    json: () => Promise<
+      paths[T][M]['responses'][`${S}`]['content']['application/json']
+    >
+  }
 }
 
 export {}

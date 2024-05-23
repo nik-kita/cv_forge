@@ -1,5 +1,6 @@
 import './assets/main.css'
 // ---
+import InlineMessage from 'primevue/inlinemessage'
 import Button from 'primevue/button'
 import PrimeVue from 'primevue/config'
 import FloatLabel from 'primevue/floatlabel'
@@ -18,6 +19,7 @@ app.use(GLogin, {
 app.use(router)
 app.use(PrimeVue, {ripple: true})
 app.component('Button', Button)
+app.component('InlineMessage', InlineMessage)
 app.component('InputText', InputText)
 app.component('FloatLabel', FloatLabel)
 app.mount('#app')

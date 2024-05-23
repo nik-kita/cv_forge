@@ -3,7 +3,12 @@ import {api_user_update_nik} from '@/api/api_user_update_nik'
 import {get_access_token} from '@/local_storage/persistent.tokens'
 import {api_to_fetch_logic} from '@/x/utils/api_to_fetch_logic'
 import {use_xstore} from '@/x/xstore'
-import {assertEvent, sendParent, setup} from 'xstate'
+import {
+  assertEvent,
+  assign,
+  sendParent,
+  setup,
+} from 'xstate'
 
 export const with_nik_machine = setup({
   types: {
@@ -11,6 +16,16 @@ export const with_nik_machine = setup({
     context: {} as x.page_settings.setting_nik.Ctx,
   },
   actions: {
+    set_client_err_message: assign({
+      client_err_message: ({event}) => {
+        assertEvent(event, 'page_settings.update_nik.fail')
+
+        return event.payload
+      },
+    }),
+    unset_client_err_message: assign({
+      client_err_message: undefined,
+    }),
     send_parent_rm_nik_success: sendParent(
       ({event, system}) => {
         assertEvent(event, 'page_settings.rm_nik.success')
@@ -81,12 +96,14 @@ export const with_nik_machine = setup({
               payload: res.nik!,
             }
           },
-          emit_on_fail: (
+          emit_on_fail: async (
             err: ApiErr<'put', '/user/nik/{nik}', 400>,
           ) => {
             return {
               type: 'page_settings.update_nik.fail',
-              payload: err.beauty_message || err.message,
+              payload: await err.json().then(j => {
+                return j.beauty_message || j.message
+              }),
             }
           },
         },
@@ -143,10 +160,12 @@ export const with_nik_machine = setup({
         },
         'page_settings.update_nik.fail': {
           target: 'Update_nik_err_showing',
+          actions: 'set_client_err_message',
         },
       },
     },
     Update_nik_err_showing: {
+      exit: 'unset_client_err_message',
       on: {
         'page_settings.update_nik_err_showing.cancel': {
           target: 'Idle',

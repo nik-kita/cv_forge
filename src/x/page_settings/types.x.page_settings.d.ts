@@ -1,5 +1,5 @@
-import type {page_settings_machine} from './page_settings_machine'
 import type {setting_nik_machine} from './children/setting_nik/setting_nik_machine'
+import type {page_settings_machine} from './page_settings_machine'
 
 declare global {
   namespace x.page_settings {
@@ -9,7 +9,9 @@ declare global {
     }
     export namespace setting_nik {
       export type logic = typeof setting_nik_machine
-      export type Ctx = x.Xstore
+      export type Ctx = x.Xstore & {
+        client_err_message?: string
+      }
       export type Children = {
         with_nik?: 'with_nik'
         no_nik?: 'no_nik'

@@ -6,7 +6,6 @@ import {
   get_user_info,
   update_user_info,
 } from '@/local_storage/persistent.xstore'
-import {root} from 'postcss'
 import {computed, ref} from 'vue'
 
 const prev_session = get_refresh_token()

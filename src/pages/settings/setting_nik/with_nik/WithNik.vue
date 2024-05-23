@@ -97,5 +97,21 @@ const click_change = () => {
       v-show="err_message"
       >{{ err_message }}</InlineMessage
     >
+    <Button
+      v-show="is_show_input"
+      @click="
+        () => {
+          if (state === 'Idle') {
+            is_show_input = false
+          } else if (state === 'Update_nik_err_showing') {
+            actor.send({
+              type: 'page_settings.update_nik_err_showing.cancel',
+            })
+          }
+        }
+      "
+      severity="secondary"
+      >Cancel</Button
+    >
   </div>
 </template>

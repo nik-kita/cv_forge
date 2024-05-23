@@ -59,7 +59,10 @@ export const with_nik_machine = setup({
       system,
       self,
     }) {
-      assertEvent(event, 'page_settings.update_nik')
+      assertEvent(event, [
+        'page_settings.update_nik',
+        'page_settings.update_nik.again',
+      ])
       api_to_fetch_logic(
         () => {
           return api_user_update_nik({

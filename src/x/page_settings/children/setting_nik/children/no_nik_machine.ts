@@ -25,7 +25,7 @@ export const no_nik_machine = setup({
           emit_on_success: res =>
             ({
               type: 'page_settings.add_nik.success',
-              payload: res.nik,
+              payload: res.nik!,
             }) satisfies x.page_settings.setting_nik.Ev,
         },
       )
@@ -40,6 +40,7 @@ export const no_nik_machine = setup({
     }),
   },
 }).createMachine({
+  id: 'no_nik_machine',
   initial: 'Idle',
   context: {
     xstore: use_xstore(),

@@ -10,6 +10,7 @@ export const page_settings_machine = setup({
     setting_nik: setting_nik_machine,
   },
 }).createMachine({
+  id: 'page_settings_machine',
   context: {
     xstore: use_xstore(),
   },

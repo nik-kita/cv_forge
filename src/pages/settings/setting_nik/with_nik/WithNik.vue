@@ -15,11 +15,14 @@ const input_ref = ref()
 const {focused: is_focused_input} = useFocus(input_ref, {
   initialValue: is_show_input.value,
 })
-const subscription = actor.subscribe(s => {
+const subscription = actor.subscribe(async s => {
   const sv = s.value
   state.value = sv
   if (sv === 'Idle') {
     is_show_input.value = false
+  } else if (sv === 'Update_nik_err_showing') {
+    await nextTick()
+    is_focused_input.value = true
   }
 })
 onUnmounted(() => {

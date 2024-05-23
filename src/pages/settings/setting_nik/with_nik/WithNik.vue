@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import {use_xstore} from '@/x/xstore'
-import {onUnmounted, ref} from 'vue'
+import {useFocus} from '@vueuse/core'
+import {nextTick, onUnmounted, ref} from 'vue'
 import type {ActorRefFrom} from 'xstate'
 
 const {nik} = use_xstore()
@@ -10,6 +11,10 @@ const {parent_actor} = defineProps<{
 const actor = parent_actor.getSnapshot().children.with_nik!
 const state = ref(actor.getSnapshot().value)
 const is_show_input = ref(false)
+const input_ref = ref()
+const {focused: is_focused_input} = useFocus(input_ref, {
+  initialValue: is_show_input.value,
+})
 const subscription = actor.subscribe(s => {
   const sv = s.value
   state.value = sv
@@ -22,6 +27,11 @@ onUnmounted(() => {
 })
 // ===
 const new_nik = ref(nik.value ?? '')
+const click_i_want_to_change = async () => {
+  is_show_input.value = true
+  await nextTick()
+  is_focused_input.value = true
+}
 const click_change = () => {
   const type =
     state.value === 'Update_nik_err_showing' ?
@@ -37,9 +47,6 @@ const click_change = () => {
     type,
     payload: new_nik.value,
   })
-}
-const click_i_want_to_change = () => {
-  is_show_input.value = true
 }
 </script>
 <template>
@@ -71,8 +78,9 @@ const click_i_want_to_change = () => {
     >Change</Button
   >
   <InputText
+    ref="input_ref"
     v-model="new_nik"
-    @keyup.enter="click_change"
+    @keydown.self.enter="click_change"
     v-if="is_show_input && state !== 'Deleting_nik'"
     :disabled="state === 'Updating_nik'"
   />

@@ -16,13 +16,9 @@ export interface paths {
     /** Logout */
     post: operations['logout_auth_logout_post']
   }
-  '/profiles/{nik}/{profile_name}': {
+  '/profiles/{name}': {
     /** Get Profile By Name */
-    get: operations['get_profile_by_name_profiles__nik___profile_name__get']
-  }
-  '/profiles/{profile_name_or_nik}': {
-    /** Get 1 Profile By Name Or Many Of User By Nik */
-    get: operations['get_1_profile_by_name_or_many_of_user_by_nik_profiles__profile_name_or_nik__get']
+    get: operations['get_profile_by_name_profiles__name__get']
   }
   '/profiles/': {
     /** Get All Profiles */
@@ -493,39 +489,10 @@ export interface operations {
     }
   }
   /** Get Profile By Name */
-  get_profile_by_name_profiles__nik___profile_name__get: {
+  get_profile_by_name_profiles__name__get: {
     parameters: {
       path: {
-        nik: string
-        profile_name: string
-      }
-    }
-    responses: {
-      /** @description Successful Response */
-      200: {
-        content: {
-          'application/json': unknown
-        }
-      }
-      /** @description Bad Request */
-      400: {
-        content: {
-          'application/json': components['schemas']['Exception_400']
-        }
-      }
-      /** @description Validation Error */
-      422: {
-        content: {
-          'application/json': components['schemas']['HTTPValidationError']
-        }
-      }
-    }
-  }
-  /** Get 1 Profile By Name Or Many Of User By Nik */
-  get_1_profile_by_name_or_many_of_user_by_nik_profiles__profile_name_or_nik__get: {
-    parameters: {
-      path: {
-        profile_name_or_nik: string
+        name: string
       }
     }
     responses: {
@@ -533,7 +500,6 @@ export interface operations {
       200: {
         content: {
           'application/json':
-            | components['schemas']['PaginatedRes_ProfileRes_']
             | components['schemas']['ProfileRes']
             | null
         }

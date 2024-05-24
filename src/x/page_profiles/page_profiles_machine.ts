@@ -1,4 +1,7 @@
+import {api_get_all_profiles} from '@/api/api_get_all_profiles'
+import {get_access_token} from '@/local_storage/persistent.tokens'
 import {setup} from 'xstate'
+import {api_to_fetch_logic} from '../utils/api_to_fetch_logic'
 
 export const page_profiles_machine = setup({
   types: {
@@ -9,12 +12,39 @@ export const page_profiles_machine = setup({
       | {type: 'page_profiles.config_rm_selected.yes'}
       | {type: 'page_profiles.config_rm_selected.no'}
       | {type: 'page_profiles.select.cancel'}
-      | {type: 'global.update_nik_route_param'},
+      | {type: 'global.update_nik_route_param'}
+      | {
+          type: 'page_profiles.get_all_profiles.success'
+          payload: ApiRes<'get', '/profiles/'>
+        },
   },
   actions: {
-    api_get_all_profiles: function ({context, event}) {
-      // Add your action code here
-      // ...
+    api_get_all_profiles: function ({
+      context,
+      event,
+      system,
+      self,
+    }) {
+      console.warn('// TODO check always event type')
+      console.log(event)
+      console.log('// TODO add assertEvent')
+      api_to_fetch_logic(
+        () =>
+          api_get_all_profiles({
+            access_token: get_access_token()!,
+          }),
+        {
+          emit_on_success: res => {
+            return {
+              type: 'page_profiles.get_all_profiles.success',
+              payload: res,
+            }
+          },
+          is_access_token_required: true,
+          system,
+          self,
+        },
+      )
     },
     api_rm_profiles: function ({context, event}) {
       // Add your action code here

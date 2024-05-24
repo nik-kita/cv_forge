@@ -18,7 +18,12 @@ export const fetch_machine = setup({
   actions: {
     success: ({event}) => {
       assertEvent(event, 'xstate.done.actor.req')
-      event.output.emit_on_success()
+      if (event.output.emit_on_success) {
+        event.output.emit_on_success()
+      }
+      if (event.output.do_on_success) {
+        event.output.do_on_success()
+      }
     },
     fail: ({event}) => {
       assertEvent(event, 'xstate.error.actor.req')

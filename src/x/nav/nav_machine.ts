@@ -7,6 +7,7 @@ import {
   navigate,
   raise_nav_ev,
 } from './actions'
+import {page_profiles_machine} from '../page_profiles/page_profiles_machine'
 
 export const nav_machine = setup({
   types: {
@@ -30,9 +31,20 @@ export const nav_machine = setup({
 
       return {}
     }),
+    spawn_page_profiles: assign(({spawn, system}) => {
+      if (system.get('page_profiles')) return {}
+
+      spawn('page_profiles', {
+        id: 'page_profiles',
+        systemId: 'page_profiles',
+      })
+
+      return {}
+    }),
   },
   actors: {
     page_settings: page_settings_machine,
+    page_profiles: page_profiles_machine,
   },
   guards: {
     is_user: ({context}) => {
@@ -55,7 +67,7 @@ export const nav_machine = setup({
 
     'nav.to.PageProfiles': {
       target: '.PageProfiles',
-      actions: 'navigate',
+      actions: ['navigate', 'spawn_page_profiles'],
     },
 
     'nav.to.PageSettings': {

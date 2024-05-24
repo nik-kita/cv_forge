@@ -26,11 +26,16 @@ export const fetch_machine = setup({
       }
     },
     fail: ({event}) => {
-      assertEvent(event, 'xstate.error.actor.req')
-      const emit_err = event.error.err_container[1]
+      assertEvent(event, [
+        'xstate.error.actor.req',
+        'xstate.init',
+      ])
+      if (event.type === 'xstate.error.actor.req') {
+        const emit_err = event.error.err_container[1]
 
-      if (emit_err) {
-        emit_err()
+        if (emit_err) {
+          emit_err()
+        }
       }
     },
     emit_im_done: sendParent(({self}) => {

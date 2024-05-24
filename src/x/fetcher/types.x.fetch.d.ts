@@ -40,6 +40,7 @@ declare global {
             ]
           }
         >
+      | x.InitEv
   }
 }
 

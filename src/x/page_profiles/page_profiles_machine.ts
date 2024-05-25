@@ -2,7 +2,7 @@ import {api_get_all_profiles} from '@/api/api_get_all_profiles'
 import {api_get_all_public_profiles_by_nik} from '@/api/api_get_all_public_profiles_by_nik'
 import {get_access_token} from '@/local_storage/persistent.tokens'
 import {watch} from 'vue'
-import {assign, setup} from 'xstate'
+import {assertEvent, assign, setup} from 'xstate'
 import {api_to_fetch_logic} from '../utils/api_to_fetch_logic'
 import {use_xstore} from '../xstore'
 
@@ -36,7 +36,16 @@ export const page_profiles_machine = setup({
         },
   },
   actions: {
-    success_get_all_public_profiles_by_nik: assign({}),
+    success_get_all_public_profiles_by_nik: assign({
+      explored_public_profiles: ({event}) => {
+        assertEvent(
+          event,
+          'page_profiles.get_all_public_profiles.success',
+        )
+
+        return event.payload
+      },
+    }),
     api_get_all_public_profiles_by_nik: function ({
       context,
       event,
@@ -79,7 +88,16 @@ export const page_profiles_machine = setup({
       // Add your action code here
       // ...
     },
-    success_get_all_profiles: assign({}),
+    success_get_all_profiles: assign({
+      my_profiles: ({event}) => {
+        assertEvent(
+          event,
+          'page_profiles.get_all_profiles.success',
+        )
+
+        return event.payload
+      },
+    }),
     api_get_all_profiles: function ({
       context,
       event,
@@ -165,6 +183,9 @@ export const page_profiles_machine = setup({
     },
     Dispaly_own_profiles: {
       on: {
+        'page_profiles.get_all_profiles.success': {
+          actions: 'success_get_all_profiles',
+        },
         'page_profiles.toggle_select': {
           target: 'Select',
           guard: {
@@ -177,6 +198,10 @@ export const page_profiles_machine = setup({
       on: {
         'page_profiles.public_nik.not_found': {
           target: '.Propose_to_explore',
+        },
+        'page_profiles.get_all_public_profiles.success': {
+          target: '.Display',
+          actions: 'success_get_all_public_profiles_by_nik',
         },
       },
       initial: 'Display',

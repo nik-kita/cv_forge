@@ -1,4 +1,4 @@
-import { req } from './req'
+import {req} from './req'
 
 export const api_get_all_public_profiles_by_nik = ({
   nik,

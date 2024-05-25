@@ -21,7 +21,6 @@ export const fetcher_machine = setup({
         const auth_actor = system.get(
           'auth',
         ) as ActorRefFrom<x.auth.logic>
-
         return {
           spawned_fetches: [
             ...context.spawned_fetches,

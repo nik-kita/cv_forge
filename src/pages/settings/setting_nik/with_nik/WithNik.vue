@@ -42,11 +42,6 @@ const click_change = () => {
       'page_settings.update_nik.again'
     : 'page_settings.update_nik'
 
-  console.log('click_change', {
-    type,
-    payload: new_nik.value,
-  })
-
   actor.send({
     type,
     payload: new_nik.value,

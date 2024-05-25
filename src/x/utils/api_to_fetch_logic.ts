@@ -14,6 +14,9 @@ export const api_to_fetch_logic = <
 >(
   api_call: T,
   options: {
+    do_on_success?: (
+      res: Awaited<ReturnType<typeof api_call>>,
+    ) => void | Promise<void>
     emit_on_success?: (
       res: Awaited<ReturnType<typeof api_call>>,
     ) => x.Ev

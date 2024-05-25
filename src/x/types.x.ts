@@ -9,6 +9,7 @@ declare global {
       | x.fetch.Ev
       | x.nav.Ev
       | x.page_settings.setting_nik.Ev
+      | x.page_profiles.Ev
     export type Xstore = {
       xstore: ReturnType<typeof use_xstore>
     }
@@ -33,6 +34,7 @@ declare global {
     export type DoneActorEv<Id extends string, T> =
       | SuccessDoneActorEv<Id, T>
       | FailDoneActorEv<Id, T>
+    export type InitEv = {type: 'xstate.init'}
   }
 }
 

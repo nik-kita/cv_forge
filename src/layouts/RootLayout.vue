@@ -7,7 +7,13 @@ import type {CallbackTypes} from 'vue3-google-login'
 import {GoogleLogin} from 'vue3-google-login'
 
 const {nav, auth} = use_x()
-const {is_user, nik, viewer_role} = use_xstore()
+const {
+  is_user,
+  user,
+  nik,
+  viewer_role,
+  nik_curr_route_param,
+} = use_xstore()
 
 const nav_value = ref(nav.getSnapshot().value)
 const auth_value = ref(auth.getSnapshot().value)
@@ -75,9 +81,11 @@ const click_logout = async () => {
   <hr />
   <div class="dev">
     <pre>is_user: {{ is_user }}</pre>
+    <pre>user: {{ user }}</pre>
     <pre>nav: {{ nav_value }}</pre>
     <pre>auth: {{ auth_value }}</pre>
     <pre>nik: {{ nik }}</pre>
+    <pre>nik_param: {{ nik_curr_route_param }}</pre>
     <pre>viewer_role: {{ viewer_role }}</pre>
   </div>
   <hr />

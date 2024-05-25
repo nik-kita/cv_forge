@@ -27,7 +27,8 @@ declare global {
       | x.SuccessDoneActorEv<
           'req',
           {
-            emit_on_success: () => void
+            emit_on_success?: () => void | Promise<void>
+            do_on_success?: () => void | Promise<void>
           }
         >
       | x.FailDoneActorEv<
@@ -39,6 +40,7 @@ declare global {
             ]
           }
         >
+      | x.InitEv
   }
 }
 

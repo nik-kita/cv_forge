@@ -15,13 +15,13 @@ export const root_machine = setup({
 }).createMachine({
   id: 'root',
   context({spawn}) {
-    spawn('auth', {id: 'auth', systemId: 'auth'})
-    spawn('nav', {id: 'nav', systemId: 'nav'})
     spawn('fetcher', {
       id: 'fetcher',
       systemId: 'fetcher',
       input: {},
     })
+    spawn('auth', {id: 'auth', systemId: 'auth'})
+    spawn('nav', {id: 'nav', systemId: 'nav'})
     return {}
   },
 })

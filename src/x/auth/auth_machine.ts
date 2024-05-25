@@ -17,10 +17,17 @@ export const auth_machine = setup({
       const setting_nik = system.get('setting_nik') as
         | ActorRefFrom<x.page_settings.setting_nik.logic>
         | undefined
-
       if (setting_nik) {
         setting_nik.send({
           type: 'page_settings.reset_machine',
+        })
+      }
+      const profiles_page = system.get('page_profiles') as
+        | ActorRefFrom<x.page_profiles.logic>
+        | undefined
+      if (profiles_page) {
+        profiles_page.send({
+          type: 'page_profiles.reset_machine',
         })
       }
     },

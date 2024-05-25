@@ -16,6 +16,10 @@ export interface paths {
     /** Logout */
     post: operations['logout_auth_logout_post']
   }
+  '/profiles/public/{nik}': {
+    /** Get Public Profiles By Nik */
+    get: operations['get_public_profiles_by_nik_profiles_public__nik__get']
+  }
   '/profiles/{name}': {
     /** Get Profile By Name */
     get: operations['get_profile_by_name_profiles__name__get']
@@ -484,6 +488,36 @@ export interface operations {
       200: {
         content: {
           'application/json': unknown
+        }
+      }
+    }
+  }
+  /** Get Public Profiles By Nik */
+  get_public_profiles_by_nik_profiles_public__nik__get: {
+    parameters: {
+      path: {
+        nik: string
+      }
+    }
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          'application/json':
+            | components['schemas']['ProfileRes']
+            | null
+        }
+      }
+      /** @description Bad Request */
+      400: {
+        content: {
+          'application/json': components['schemas']['Exception_400']
+        }
+      }
+      /** @description Validation Error */
+      422: {
+        content: {
+          'application/json': components['schemas']['HTTPValidationError']
         }
       }
     }

@@ -10,6 +10,7 @@ declare global {
     export type logic = ActorRefFrom<typeof nav_machine>
     export type Children = {
       page_settings?: 'page_settings'
+      page_profiles?: 'page_profiles'
     }
     export type Ctx = {
       router: Router

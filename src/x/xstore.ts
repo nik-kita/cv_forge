@@ -6,7 +6,6 @@ import {
   get_user_info,
   update_user_info,
 } from '@/local_storage/persistent.xstore'
-import {root} from 'postcss'
 import {computed, ref} from 'vue'
 
 const prev_session = get_refresh_token()
@@ -44,9 +43,11 @@ const viewer_role = ref<
   | 'viewer::should_add_own_nik'
   | 'viewer::can_add_someone_nik'
 >('viewer')
+const nik_curr_route_param = ref(nik.value)
 
 export const use_xstore = () => {
   return {
+    nik_curr_route_param,
     is_user,
     user,
     nik,

@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import {use_x} from '@/use_x'
-import {use_xstore} from '@/x/xstore'
-import {onUnmounted, ref} from 'vue'
-import type {ActorRefFrom} from 'xstate'
+import { use_x } from '@/use_x'
+import { use_xstore } from '@/x/xstore'
+import { onUnmounted, ref } from 'vue'
+import type { ActorRefFrom } from 'xstate'
+import ProposeExplore from './ProposeExplore.vue'
 const {nav} = use_x()
 const {is_user} = use_xstore()
 const page_actor = nav.getSnapshot().children
@@ -19,5 +20,10 @@ onUnmounted(
 
 <template>
   <h1>Profiles</h1>
-  <pre>{{ state }}</pre>
+  <ProposeExplore
+    v-if="
+      typeof state === 'object' &&
+      state.Display_public_profiles === 'Propose_to_explore'
+    "
+  />
 </template>

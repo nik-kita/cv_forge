@@ -1,5 +1,5 @@
 import PageHome from '@/pages/PageHome.vue'
-import PageProfiles from '@/pages/PageProfiles.vue'
+import PageProfiles from '@/pages/profiles/PageProfiles.vue'
 import {createRouter, createWebHistory} from 'vue-router'
 
 export const router = createRouter({

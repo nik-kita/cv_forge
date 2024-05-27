@@ -1,4 +1,5 @@
 import type {
+  AnyActorRef,
   ContextFrom,
   EventFromLogic,
   InputFrom,
@@ -16,7 +17,9 @@ declare global {
       my_profiles?: ApiRes<'get', '/profiles/'>
     }
     export type Ev =
-      | {type: 'page_profiles.item.display'}
+      | {
+          type: 'page_profiles.item.display'
+        }
       | {type: 'page_profiles.reset_machine'}
       | {type: 'page_profiles.public_nik.not_found'}
       | {type: 'page_profiles.toggle_select'}

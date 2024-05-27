@@ -12,7 +12,6 @@ export const navigate = async ({
   ])
 
   context.nav_toggle_guard.allow = true
-  console.log('NAVIGATE', event)
   await context.router.push(event.path)
   context.nav_toggle_guard.allow = false
 }

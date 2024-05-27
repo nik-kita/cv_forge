@@ -60,6 +60,7 @@ export const router = createRouter({
         import(
           '@/page/profiles/[profile_name]/PageSingleProfile.vue'
         ),
+      props: true,
       meta: {
         x_nav_ev_name: 'nav.to.PageSingleProfile',
         maybe_nik_slug: true,

@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import {onUnmounted, ref} from 'vue'
-import DataViewLayoutOptions from 'primevue/dataviewlayoutoptions' // optional
 import type {ActorRefFrom} from 'xstate'
 
 const props = defineProps<{
@@ -38,9 +37,11 @@ onUnmounted(
         ) in slotProps.items as (typeof profiles)['items']"
         :key="i"
       >
-        <RouterLink :to="`/profile/${item.name}`">{{
-          item.name
-        }}</RouterLink>
+        <RouterLink
+          :page_profiles_actor
+          :to="`/profile/${item.name}`"
+          >{{ item.name }}</RouterLink
+        >
       </div>
     </template>
   </DataView>

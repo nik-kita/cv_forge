@@ -22,8 +22,12 @@ const init_x = () => {
   const nav = App_snap.children.nav!
   const nav_snap = nav.getSnapshot()
   const nav_state = ref(nav_snap.value)
+  const lazy_pages = {
+    page_profiles: nav_snap.children.page_profiles,
+  }
   nav.subscribe(s => {
     nav_state.value = s.value
+    lazy_pages.page_profiles = s.children.page_profiles
   })
   const fetcher_actor = App_snap.children.fetcher!
   App.start()
@@ -39,6 +43,7 @@ const init_x = () => {
     nav_state,
     auth,
     auth_state,
+    lazy_pages,
   }
 }
 

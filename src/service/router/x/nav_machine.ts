@@ -1,5 +1,11 @@
 import {router} from '@/service/router/router'
-import {assign, raise, setup, stopChild} from 'xstate'
+import {
+  assign,
+  raise,
+  sendTo,
+  setup,
+  stopChild,
+} from 'xstate'
 import {page_settings_machine} from '../../../page/settings/PageSettings.x'
 import {use_xstore} from '../../../common_xstate/xstore'
 import {
@@ -67,11 +73,27 @@ export const nav_machine = setup({
 
     'nav.to.PageProfiles': {
       target: '.PageProfiles',
-      actions: ['navigate', 'spawn_page_profiles'],
+      actions: [
+        'navigate',
+        'spawn_page_profiles',
+        sendTo('page_profiles', {
+          type: 'page_profiles.reset_machine',
+        } satisfies x.page_profiles.Ev),
+      ],
     },
     'nav.to.PageSingleProfile': {
       target: '.PageSingleProfile',
-      actions: ['navigate', 'spawn_page_profiles'],
+      actions: [
+        'navigate',
+        'spawn_page_profiles',
+        sendTo(
+          'page_profiles',
+          () =>
+            ({
+              type: 'page_profiles.item.display',
+            }) satisfies x.page_profiles.Ev,
+        ),
+      ],
     },
     'nav.to.PageSettings': {
       target: '.PageSettings',

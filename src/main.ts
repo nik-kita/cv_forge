@@ -13,7 +13,7 @@ import 'primevue/resources/themes/aura-light-green/theme.css'
 import {createApp} from 'vue'
 import GLogin from 'vue3-google-login'
 import App from './App.vue'
-import {router} from './router/router'
+import {router} from './service/router/router'
 
 const app = createApp(App)
 

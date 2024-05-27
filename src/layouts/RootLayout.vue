@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import {use_x} from '@/use_x'
-import {use_xstore} from '@/x/xstore'
+import {use_xstore} from '@/common_xstate/xstore'
 import {ref} from 'vue'
 import {RouterLink} from 'vue-router'
 import type {CallbackTypes} from 'vue3-google-login'

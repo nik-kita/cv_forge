@@ -1,13 +1,13 @@
 import {createActor} from 'xstate'
-import {root_machine} from './x/root/root_machine'
 import {createBrowserInspector} from '@statelyai/inspect'
+import {App_machine} from './App.x'
 
 const init_x = () => {
   const {inspect} = createBrowserInspector()
-  const root = createActor(root_machine, {
+  const App = createActor(App_machine, {
     inspect,
   })
-  const rsnapshot = root.getSnapshot()
+  const rsnapshot = App.getSnapshot()
   const auth = rsnapshot.children.auth!
   const nav = rsnapshot.children.nav!
   const fetcher = rsnapshot.children.fetcher!
@@ -15,12 +15,12 @@ const init_x = () => {
   console.assert(!!auth, 'auth is not defined')
   console.assert(!!nav, 'nav is not defined')
   console.assert(!!fetcher, 'fetcher is not defined')
-  root.start()
+  App.start()
 
   return {
     nav,
     auth,
-    root,
+    App,
   }
 }
 

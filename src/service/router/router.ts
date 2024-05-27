@@ -1,4 +1,5 @@
 import PageHome from '@/page/PageHome.vue'
+import PageSingleProfile from '@/page/profiles/[profile_name]/PageSingleProfile.vue'
 import PageProfiles from '@/page/profiles/PageProfiles.vue'
 import {createRouter, createWebHistory} from 'vue-router'
 
@@ -38,6 +39,29 @@ export const router = createRouter({
       component: PageProfiles,
       meta: {
         x_nav_ev_name: 'nav.to.PageProfiles',
+        maybe_nik_slug: true,
+      },
+    },
+    {
+      path: '/profile/:name',
+      // component: PageSingleProfile,
+      component: () =>
+        import(
+          '@/page/profiles/[profile_name]/PageSingleProfile.vue'
+        ),
+      meta: {
+        x_nav_ev_name: 'nav.to.PageSingleProfile',
+        maybe_nik_slug: true,
+      },
+    },
+    {
+      path: '/profile/:name/:nik',
+      component: () =>
+        import(
+          '@/page/profiles/[profile_name]/PageSingleProfile.vue'
+        ),
+      meta: {
+        x_nav_ev_name: 'nav.to.PageSingleProfile',
         maybe_nik_slug: true,
       },
     },

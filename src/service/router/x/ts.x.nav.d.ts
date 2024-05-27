@@ -36,6 +36,10 @@ declare global {
           type: 'nav.to.PageSettings'
           path: string
         }
+      | {
+          type: 'nav.to.PageSingleProfile'
+          path: string
+        }
 
     export type Args = ActionArgs<Ctx, Ev, Ev>
   }

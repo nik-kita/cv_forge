@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import {onUnmounted, ref} from 'vue'
-import DataViewLayoutOptions from 'primevue/dataviewlayoutoptions' // optional
 import type {ActorRefFrom} from 'xstate'
 
 const props = defineProps<{
@@ -8,10 +7,10 @@ const props = defineProps<{
 }>()
 const snap = props.page_profiles_actor.getSnapshot()
 const profiles = ref(
-  snap.context.my_profiles ??
+  snap.context.explored_public_profiles ??
     ({items: [], offset: 0, total: 0} satisfies ApiRes<
       'get',
-      '/profiles/'
+      '/profiles/public/{nik}'
     >),
 )
 const state = ref(snap.value)
@@ -19,8 +18,8 @@ onUnmounted(
   props.page_profiles_actor.subscribe(s => {
     const sv = s.value
     state.value = sv
-    if (s.context.my_profiles) {
-      profiles.value = s.context.my_profiles
+    if (s.context.explored_public_profiles) {
+      profiles.value = s.context.explored_public_profiles
     }
   }).unsubscribe,
 )
@@ -38,9 +37,7 @@ onUnmounted(
         ) in slotProps.items as (typeof profiles)['items']"
         :key="i"
       >
-        <InlineMessage severity="contrast"
-          >{{ item.name }}
-        </InlineMessage>
+        <pre> {{ item }}</pre>
       </div>
     </template>
   </DataView>

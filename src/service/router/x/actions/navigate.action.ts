@@ -8,9 +8,11 @@ export const navigate = async ({
     'nav.to.PageHome',
     'nav.to.PageProfiles',
     'nav.to.PageSettings',
+    'nav.to.PageSingleProfile',
   ])
 
   context.nav_toggle_guard.allow = true
+  console.log('NAVIGATE', event)
   await context.router.push(event.path)
   context.nav_toggle_guard.allow = false
 }

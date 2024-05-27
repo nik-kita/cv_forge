@@ -25,13 +25,12 @@ const init_x = () => {
   nav.subscribe(s => {
     nav_state.value = s.value
   })
-
   const fetcher_actor = App_snap.children.fetcher!
+  App.start()
 
   console.assert(!!auth, 'auth is not defined')
   console.assert(!!nav, 'nav is not defined')
   console.assert(!!fetcher_actor, 'fetcher is not defined')
-  App.start()
 
   return {
     App,

@@ -2,38 +2,25 @@ import {api_get_all_profiles} from '@/api/api_get_all_profiles'
 import {api_get_all_public_profiles_by_nik} from '@/api/api_get_all_public_profiles_by_nik'
 import {get_access_token} from '@/service/local_storage/persistent.tokens'
 import {watch} from 'vue'
-import {assertEvent, assign, setup} from 'xstate'
+import {
+  assertEvent,
+  assign,
+  setup,
+  spawnChild,
+  stopChild,
+} from 'xstate'
 import {api_to_fetch_logic} from '../../common_xstate/utils/api_to_fetch_logic'
 import {use_xstore} from '../../common_xstate/xstore'
+import {PageSingleProfile_machine} from './[profile_name]/PageSingleProfile.x'
 
 export const PageProfiles_machine = setup({
   types: {
-    context: {} as {
-      explored_public_profiles?: ApiRes<
-        'get',
-        '/profiles/public/{nik}'
-      >
-      my_profiles?: ApiRes<'get', '/profiles/'>
-    },
-    events: {} as
-      | {type: 'page_profiles.reset_machine'}
-      | {type: 'page_profiles.public_nik.not_found'}
-      | {type: 'page_profiles.toggle_select'}
-      | {type: 'page_profiles.select.rm'}
-      | {type: 'page_profiles.select.cancel'}
-      | {type: 'page_profiles.config_rm_selected.yes'}
-      | {type: 'page_profiles.config_rm_selected.no'}
-      | {
-          type: 'global.update_nik_route_param'
-        }
-      | {
-          type: 'page_profiles.get_all_profiles.success'
-          payload: ApiRes<'get', '/profiles/'>
-        }
-      | {
-          type: 'page_profiles.get_all_public_profiles.success'
-          payload: ApiRes<'get', '/profiles/public/{nik}'>
-        },
+    context: {} as x.page_profiles.Ctx,
+    events: {} as x.page_profiles.Ev,
+    children: {} as x.page_profiles.Children,
+  },
+  actors: {
+    single_profile: PageSingleProfile_machine,
   },
   actions: {
     success_get_all_public_profiles_by_nik: assign({
@@ -181,8 +168,16 @@ export const PageProfiles_machine = setup({
         },
       ],
     },
+    Single_profile: {
+      entry: spawnChild('single_profile', {
+        id: 'single_profile',
+      }),
+    },
     Dispaly_own_profiles: {
       on: {
+        'page_profiles.item.display': {
+          target: 'Single_profile',
+        },
         'page_profiles.get_all_profiles.success': {
           actions: 'success_get_all_profiles',
         },

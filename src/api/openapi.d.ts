@@ -503,9 +503,7 @@ export interface operations {
       /** @description Successful Response */
       200: {
         content: {
-          'application/json':
-            | components['schemas']['ProfileRes']
-            | null
+          'application/json': components['schemas']['PaginatedRes_ProfileRes_']
         }
       }
       /** @description Bad Request */

@@ -1,12 +1,10 @@
 <script setup lang="ts">
 import {use_x} from '@/use_x'
-import {use_xstore} from '@/common_xstate/xstore'
 import {onUnmounted, ref} from 'vue'
 import type {ActorRefFrom} from 'xstate'
-import DisplayOwnProfiles from './lib/DisplayOwnProfiles.vue'
-import ProposeExplore from './lib/ProposeExplore.vue'
+import DisplayOwnProfiles from './_/DisplayOwnProfiles.vue'
+import ProposeExplore from './_/ProposeExplore.vue'
 const {nav} = use_x()
-const {is_user} = use_xstore()
 const page_profiles_actor = nav.getSnapshot().children
   .page_profiles! as ActorRefFrom<x.page_profiles.logic>
 const state = ref(page_profiles_actor.getSnapshot().value)

@@ -1,12 +1,11 @@
 <script setup lang="ts">
-import {use_x} from '@/use_x'
 import {use_xstore} from '@/common_xstate/xstore'
-import {ref} from 'vue'
+import {use_x} from '@/use_x'
 import {RouterLink} from 'vue-router'
 import type {CallbackTypes} from 'vue3-google-login'
 import {GoogleLogin} from 'vue3-google-login'
 
-const {nav, auth} = use_x()
+const {auth, App_state, auth_state, nav_state} = use_x()
 const {
   is_user,
   user,
@@ -14,16 +13,6 @@ const {
   viewer_role,
   nik_curr_route_param,
 } = use_xstore()
-
-const nav_value = ref(nav.getSnapshot().value)
-const auth_value = ref(auth.getSnapshot().value)
-
-nav.subscribe(ns => {
-  nav_value.value = ns.value
-})
-auth.subscribe(as => {
-  auth_value.value = as.value
-})
 
 const callback: CallbackTypes.CredentialCallback =
   async res => {
@@ -82,8 +71,9 @@ const click_logout = async () => {
   <div class="dev">
     <pre>is_user: {{ is_user }}</pre>
     <pre>user: {{ user }}</pre>
-    <pre>nav: {{ nav_value }}</pre>
-    <pre>auth: {{ auth_value }}</pre>
+    <pre>nav: {{ nav_state }}</pre>
+    <pre>auth: {{ auth_state }}</pre>
+    <pre>App: {{ App_state }}</pre>
     <pre>nik: {{ nik }}</pre>
     <pre>nik_param: {{ nik_curr_route_param }}</pre>
     <pre>viewer_role: {{ viewer_role }}</pre>

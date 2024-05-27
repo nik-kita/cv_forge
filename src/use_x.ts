@@ -1,26 +1,45 @@
 import {createActor} from 'xstate'
 import {createBrowserInspector} from '@statelyai/inspect'
 import {App_machine} from './App.x'
+import {ref} from 'vue'
 
 const init_x = () => {
   const {inspect} = createBrowserInspector()
   const App = createActor(App_machine, {
     inspect,
   })
-  const rsnapshot = App.getSnapshot()
-  const auth = rsnapshot.children.auth!
-  const nav = rsnapshot.children.nav!
-  const fetcher = rsnapshot.children.fetcher!
+  const App_snap = App.getSnapshot()
+  const App_state = ref(App_snap.value)
+  App.subscribe(s => {
+    App_state.value = s.value
+  })
+  const auth = App_snap.children.auth!
+  const auth_snap = auth.getSnapshot()
+  const auth_state = ref(auth_snap.value)
+  auth.subscribe(s => {
+    auth_state.value = s.value
+  })
+  const nav = App_snap.children.nav!
+  const nav_snap = nav.getSnapshot()
+  const nav_state = ref(nav_snap.value)
+  nav.subscribe(s => {
+    nav_state.value = s.value
+  })
+
+  const fetcher_actor = App_snap.children.fetcher!
 
   console.assert(!!auth, 'auth is not defined')
   console.assert(!!nav, 'nav is not defined')
-  console.assert(!!fetcher, 'fetcher is not defined')
+  console.assert(!!fetcher_actor, 'fetcher is not defined')
   App.start()
 
   return {
-    nav,
-    auth,
     App,
+    App_state,
+    nav,
+    nav_state,
+    auth,
+    auth_state,
   }
 }
 

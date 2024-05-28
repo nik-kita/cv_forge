@@ -4,6 +4,7 @@ import {onUnmounted, ref} from 'vue'
 import type {ActorRefFrom} from 'xstate'
 import DisplayOwnProfiles from './_/DisplayOwnProfiles.vue'
 import ProposeExplore from './_/ProposeExplore.vue'
+import DispalyPublicProfiles from './_/DispalyPublicProfiles.vue'
 const {nav} = use_x()
 const page_profiles_actor = nav.getSnapshot().children
   .page_profiles! as ActorRefFrom<x.page_profiles.logic>
@@ -22,6 +23,13 @@ onUnmounted(
   <DisplayOwnProfiles
     :page_profiles_actor
     v-if="state === 'Dispaly_own_profiles'"
+  />
+  <DispalyPublicProfiles
+    :page_profiles_actor
+    v-if="
+      typeof state === 'object' &&
+      state.Display_public_profiles === 'Display'
+    "
   />
   <ProposeExplore
     v-if="

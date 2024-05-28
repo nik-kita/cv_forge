@@ -37,4 +37,7 @@ onUnmounted(
       state.Display_public_profiles === 'Propose_to_explore'
     "
   />
+  <pre>
+    {{ state }}
+  </pre>
 </template>

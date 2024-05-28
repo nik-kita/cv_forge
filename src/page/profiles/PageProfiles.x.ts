@@ -115,11 +115,17 @@ export const PageProfiles_machine = setup({
     is_owner: function ({context, event}) {
       const {viewer_role, is_user} = use_xstore()
 
-      return is_user && viewer_role.value !== 'viewer'
+      return is_user.value && viewer_role.value !== 'viewer'
     },
     is_some_select: function ({context, event}) {
       // Add your guard condition here
       return true
+    },
+    is_slug_nik: function ({context}) {
+      const {nik_curr_route_param} = use_xstore()
+
+      console.log('is_slug_nik', nik_curr_route_param.value)
+      return nik_curr_route_param.value !== undefined
     },
   },
 }).createMachine({
@@ -202,7 +208,12 @@ export const PageProfiles_machine = setup({
       initial: 'Display',
       states: {
         Propose_to_explore: {},
-        Display: {},
+        Display: {
+          always: {
+            target: 'Propose_to_explore',
+            guard: 'is_slug_nik',
+          },
+        },
       },
     },
     Select: {

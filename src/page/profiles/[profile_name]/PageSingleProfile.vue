@@ -1,25 +1,20 @@
 <script setup lang="ts">
 import {use_x} from '@/use_x'
-import {onUnmounted, ref} from 'vue'
-import type {ActorRefFrom} from 'xstate'
+import {onUnmounted, ref, watch} from 'vue'
+import type {Subscription} from 'xstate'
 
-const {
-  lazy_pages: {page_profiles},
-} = use_x()
+const {page_profiles} = use_x()
+let unsubscribe: Subscription | undefined = undefined
+const state = ref()
+watch(page_profiles, actor => {
+  if (unsubscribe || !actor) return
 
-if (!page_profiles) {
-  throw new Error('page_profiles is not lazy loaded')
-}
-
-const single_profile_actor =
-  page_profiles.getSnapshot().children.single_profile!
-const state = ref(single_profile_actor.getSnapshot().value)
-
-onUnmounted(
-  single_profile_actor.subscribe(s => {
+  unsubscribe = actor.subscribe(s => {
     state.value = s.value
-  }).unsubscribe,
-)
+  })
+})
+
+onUnmounted(unsubscribe ? unsubscribe : () => {})
 </script>
 
 <template>
